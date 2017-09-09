@@ -19,7 +19,3 @@ luhnSum n = (n `div` 10000000000) +
             luhnDouble (n `mod` 1000) +
             (n `mod` 100) +
             luhnDouble (n `mod` 10)
-
-
--- checkDigit :: Int -> Int
--- checkDigit n = ((luhnSum n)*9) `mod` 10

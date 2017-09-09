@@ -2,12 +2,24 @@ import Test.QuickCheck
 
 -- Assignment 5. time: 30 minutes
 
-primeList :: [Integer]
-primeList = [x | x <- [1..], prime x]
+-- Prime funcion from slides
+prime :: Integer -> Bool
+prime n = n > 1 && all (\ x -> rem n x /= 0) xs
+          where xs = takeWhile (\ y -> y^2 <= n) primes
+
+primes :: [Integer]
+primes = 2 : filter prime [3..]
 
 takePrimes :: Int -> Integer
-takePrimes n
-  | n >= 101  = if prime (sum $ take 101 $ reverse $ take n primeList)
-                then sum $ take 101 $ reverse $ take n primeList
-                else takePrimes (n+1)
-  | otherwise = error "Slice needs to be at least 101"
+takePrimes n = if prime (sum $ take 101 $ reverse $ take n primes)
+               then sum $ take 101 $ reverse $ take n primes
+               else takePrimes (n+1)
+
+solve :: Integer
+solve = takePrimes 101
+
+{--
+answer 37447
+
+todo: It can be checked by:
+--}
