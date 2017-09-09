@@ -13,8 +13,8 @@ primes = 2 : filter prime [3..]
 reversal :: Integer -> Integer
 reversal = read . reverse . show
 
-test4 :: Integer -> [Integer]
-test4 n = [x | x <- [1..n],
+solve :: Integer -> [Integer]
+solve n = [x | x <- [1..n],
                prime x,
                prime (reversal x)]
 
