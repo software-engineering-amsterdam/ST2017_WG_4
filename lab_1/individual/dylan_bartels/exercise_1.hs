@@ -13,3 +13,7 @@ exercise3 x = listSumPower x 3 == ((x * (x+1)) `div` 2)^2
 
 solve :: Positive Int -> Bool
 solve (Positive n) = exercise2 n && exercise3 n
+
+{--
+QuickCheck solve
+--}
