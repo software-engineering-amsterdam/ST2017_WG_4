@@ -1,5 +1,5 @@
 -- Assignment: Lab1
--- Exercise: 1
+-- Exercise: Euler 9
 -- Authors: Quinten Heijn, Dylan Bartels, Wojciech Czabański
 --------------------------------------------------------------------------
 -- A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
