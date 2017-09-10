@@ -1,0 +1,3 @@
+-- Assignment: Lab1
+-- Exercise: 7
+-- Done with the other students. See Wojciech/lab1_8.hs
