@@ -11,8 +11,8 @@ import Test.QuickCheck
 indexA :: Int
 indexA = ord 'A'
 
-rot13 :: String -> [Char]
-rot13 str = (map (\x -> chr (ord x + 13)) str):[]
+rot13 :: [Char] -> [Char]
+rot13 str = (map (\x -> chr (ord x + 13)) str)
 
 -- TODO: finish the implementation
 -- define a testable property

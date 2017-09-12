@@ -15,6 +15,7 @@ deran ns = filter permutations (tail (reverse ns))
 
 -- TODO: how to check for deragements (implement isDerangement)
 -- finish generating derangements
-
+-- check by analogy for lab_4 
+--
 
 -- Time spent: 5 minutes
