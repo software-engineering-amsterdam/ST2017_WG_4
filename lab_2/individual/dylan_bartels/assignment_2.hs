@@ -24,4 +24,23 @@ isIsosceles x y z
   | otherwise            = False
 
 isRectangular :: Integer -> Integer -> Integer -> Bool
-isRectangular x y z =
+isRectangular x y z
+  | x^2 + y^2 == z^2 = True
+  | x^2 + z^2 == y^2 = True
+  | y^2 + z^2 == x^2 = True
+  | otherwise        = False
+
+genEquilateral :: Integer -> [[Integer]]
+genEquilateral n = permutations [n, n, n]
+
+-- https://mail.haskell.org/pipermail/beginners/2011-November/008991.html
+combinations :: Int -> [Int] -> [[Int]]
+combinations 0 _ = [[]]
+combinations _ [] = []
+combinations n xs@(y:ys)
+ | n < 0     = []
+ | otherwise = case drop (n-1) xs of
+                 [ ] -> []
+                 [_] -> [xs]
+                 _   -> [y:c | c <- combinations (n-1) ys]
+                               ++ combinations n ys

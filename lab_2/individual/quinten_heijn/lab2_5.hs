@@ -1,5 +1,5 @@
 -- Assignment: Lab2
--- Exercise: 5
+-- Exercise: 5 (Implementing and testing ROT13 encoding)
 -- Student: Quinten Heijn
 -- Time needed: 30 min
 --------------------------------------------------------------------------

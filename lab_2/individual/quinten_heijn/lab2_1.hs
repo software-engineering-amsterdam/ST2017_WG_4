@@ -1,5 +1,5 @@
 -- Assignment: Lab2
--- Exercise: 1
+-- Exercise: 1 (Useful logic notation)
 -- Student: Quinten Heijn
 -- Time needed: 2 hours +
 --------------------------------------------------------------------------

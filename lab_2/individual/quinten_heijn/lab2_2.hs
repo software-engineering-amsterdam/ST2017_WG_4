@@ -1,5 +1,5 @@
 -- Assignment: Lab2
--- Exercise: 2
+-- Exercise: 2 (Recognizing triangles)
 -- Student: Quinten Heijn
 -- Time needed: 30 min
 --------------------------------------------------------------------------
