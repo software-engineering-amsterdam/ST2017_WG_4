@@ -25,5 +25,4 @@ All no Permutations
 1. Same list as previous 1
 2. generate all non permutations of the list with the same length
 3. All must be isDerangement False
-
 --}
