@@ -8,6 +8,7 @@ import Test.QuickCheck
 -- Properties van be ordinary haskell boolean functions
 isPermutation :: Eq a => [a] -> [a] -> Bool
 isPermutation [] [] = True
+isPermutation [] ys = False
 isPermutation xs ys = if elem (head xs) ys
   then isPermutation (tail xs) (delete (head xs) ys)
   else False
@@ -15,9 +16,12 @@ isPermutation xs ys = if elem (head xs) ys
 testPermutation :: Eq a => [a] -> Bool
 testPermutation lst = filter (not . isPermutation lst) (permutations lst) == []
 
-testNotPermutation :: Eq a => [a] -> Bool
-testNotPermutation lst = filter (isPermutation lst) combinations == []
-  where combinations = (subsequences lst) \\ (permutations lst)
+testNotPermutationAll :: Eq a => [a] -> Bool
+testNotPermutationAll lst = filter (isPermutation lst) combinations == []
+   where combinations = (concat $ map permutations $ subsequences lst) \\ (permutations lst)
+
+testNotPermutationSingle :: Eq a => [a] -> [[a]] -> Bool
+testNotPermutationSingle lst1 lst2 = filter (isPermutation lst1) (lst2 \\ (permutations lst1)) == []
 
 {--
 Next, define some testable properties for this function, and use a number of
