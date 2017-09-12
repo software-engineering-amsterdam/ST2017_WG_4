@@ -24,7 +24,4 @@ test a b c = False
 -- Create generators for each type of triangle
 -- For a [[Int, Int, Int]]
 
--- There is not posibility of Rectangular triangle
--- Overleaf
-
 -- Time spent: 25 minutes

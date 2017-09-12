@@ -8,14 +8,12 @@ import Test.QuickCheck
 -- Recognizing and generating derangements
 
 isDerangement :: [Int] -> [Int] -> Bool
-isDerangement ns1 ns2 = False
+isDerangement [] [] = True
+isDerangement a [] = False
+isDerangement [] b = False
+isDerangement (a:as) (b:bs) = a /= b && (isDerangement as bs)
 
 deran :: [Int] -> [[Int]]
-deran ns = filter permutations (tail (reverse ns))
+deran ns = filter (\x -> (isDerangement ns x)) (permutations ns)
 
--- TODO: how to check for deragements (implement isDerangement)
--- finish generating derangements
--- check by analogy for lab_4 
---
-
--- Time spent: 5 minutes
+-- Time spent: 10 minutes

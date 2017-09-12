@@ -8,14 +8,9 @@ import Test.QuickCheck
 -- Recognizing permutations
 
 isPermutation :: Eq a => [a] -> [a] -> Bool
-isPermutation = False
--- check it element by element recursively with the tail of the list
+isPermutation [] [] = True
+isPermutation a [] = False
+isPermutation [] b = False
+isPermutation (a:as) b = (elem a b) && (isPermutation as (delete a b))
 
--- TODO: check how to recognize permutations
--- get a random list of integers
--- list combinations and subtract from permutations
--- check on the subsets with the property
--- order the properties by strength
---
-
--- Time spent: minutes
+-- Time spent: 20 minutes

@@ -19,13 +19,21 @@ stronger xs p q = forall xs (\ x -> p x --> q x)
 weaker   xs p q = stronger xs q p
 
 p1, p2, p3, p4 :: Int -> Bool
-p1 = even x && x > 3
-p2 = even x || x > 3
-p3 = (even x && x > 3) || even x
-p4 = even x)
+p1 x = even x && x > 3
+p2 x = even x || x > 3
+p3 x = (even x && x > 3) || even x
+p4 x = even x
 
--- TODO: Review the properties from the workshop
--- See if I can make the properties execute
--- Order the properties by strength on a small domain [(-10)..10]
+props :: [Int -> Bool]
+props = [p1, p2, p3, p4]
 
--- Time spent: 15 minutes
+domain :: [Int]
+domain = [(-10)..10]
+
+propertyEvaluations :: [Int]
+propertyEvaluations = map (\l -> foldr (\x acc -> if x then acc+1 else acc) 0 l) (map (\x -> map (\y -> x y) domain) props)
+
+-- The evaluations yield the following result: [4, 14, 11, 11]
+-- This means that p1 is the strongest, then come p3 and p4 and p2 is the weakest
+
+-- Time spent: 25 minutes

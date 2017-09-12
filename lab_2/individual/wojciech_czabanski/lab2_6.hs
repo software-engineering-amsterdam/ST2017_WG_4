@@ -8,14 +8,11 @@ import Test.QuickCheck
 
 -- Implementing ROT13 encoding
 
-indexA :: Int
-indexA = ord 'A'
+shift :: Char -> Char
+shift a | a == ' ' = a
+        | otherwise = chr ((ord 'A') + ((ord a - ord 'A') + 13) `mod` 26)
 
 rot13 :: [Char] -> [Char]
-rot13 str = (map (\x -> chr (ord x + 13)) str)
-
--- TODO: finish the implementation
--- define a testable property
--- make it QuickCheck testable
+rot13 str = (map (\x -> shift x) str)
 
 -- Time spent: 15 minutes
