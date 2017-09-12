@@ -19,13 +19,13 @@ stronger xs p q = forall xs (\ x -> p x --> q x)
 weaker   xs p q = stronger xs q p
 
 p1, p2, p3, p4 :: Int -> Bool
-p1 = (\x -> even x && x > 3) even
-p2 = (\x -> even x || x > 3) even
-p3 = (\x -> (even x && x > 3) || even x) even
-p4 = even (\x -> (even x && x > 3) || even x)
+p1 = even x && x > 3
+p2 = even x || x > 3
+p3 = (even x && x > 3) || even x
+p4 = even x)
 
 -- TODO: Review the properties from the workshop
 -- See if I can make the properties execute
 -- Order the properties by strength on a small domain [(-10)..10]
 
--- Time spent: 5 minutes
+-- Time spent: 15 minutes

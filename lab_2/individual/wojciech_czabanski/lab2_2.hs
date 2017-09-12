@@ -27,4 +27,4 @@ test a b c = False
 -- There is not posibility of Rectangular triangle
 -- Overleaf
 
--- Time spent: 10 minutes
+-- Time spent: 25 minutes
