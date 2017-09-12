@@ -33,6 +33,7 @@ isRectangular x y z
 genEquilateral :: Integer -> [[Integer]]
 genEquilateral n = permutations [n, n, n]
 
+-- https://mail.haskell.org/pipermail/beginners/2011-November/008991.html
 combinations :: Int -> [Int] -> [[Int]]
 combinations 0 _ = [[]]
 combinations _ [] = []
@@ -42,4 +43,4 @@ combinations n xs@(y:ys)
                  [ ] -> []
                  [_] -> [xs]
                  _   -> [y:c | c <- combinations (n-1) ys]
-                           ++ combinations n ys
+                               ++ combinations n ys
