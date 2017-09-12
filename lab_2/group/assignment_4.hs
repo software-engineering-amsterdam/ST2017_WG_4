@@ -12,6 +12,13 @@ isPermutation xs ys = if elem (head xs) ys
   then isPermutation (tail xs) (delete (head xs) ys)
   else False
 
+testPermutation :: Eq a => [a] -> Bool
+testPermutation lst = filter (not . isPermutation lst) (permutations lst) == []
+
+testNotPermutation :: Eq a => [a] -> Bool
+testNotPermutation lst = filter (isPermutation lst) combinations == []
+  where combinations = (subsequences lst) \\ (permutations lst)
+
 {--
 Next, define some testable properties for this function, and use a number of
 well-chosen lists to test isPermutation. You may assume that your input lists
