@@ -1,7 +1,5 @@
 -- Assignment: Lab2
--- Exercise: 4 (Recognizing and generating derangements)
--- Student: Quinten Heijn
--- Time needed: 30 min
+-- Exercise: 5 (Recognizing and generating derangements)
 --------------------------------------------------------------------------
 
 module Lab2 where

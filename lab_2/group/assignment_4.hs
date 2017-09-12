@@ -7,7 +7,10 @@ import Test.QuickCheck
 
 -- Properties van be ordinary haskell boolean functions
 isPermutation :: Eq a => [a] -> [a] -> Bool
-isPermutation x y = if x `elem` (permutations y) then True else False
+isPermutation [] [] = True
+isPermutation xs ys = if elem (head xs) ys
+  then isPermutation (tail xs) (delete (head xs) ys)
+  else False
 
 {--
 Next, define some testable properties for this function, and use a number of
