@@ -5,51 +5,42 @@
 --------------------------------------------------------------------------------
 
 module Lab2_3 where
-  
+
 import Data.List
 import Data.Char
 import System.Random
 import Test.QuickCheck
 
-(-->) :: Bool -> Bool -> Bool
-p --> q = (not p) || q
+-- Testing properties strength
 
 forall :: [a] -> (a -> Bool) -> Bool
 forall = flip all
+
+infix 1 -->
+(-->) :: Bool -> Bool -> Bool
+p --> q = (not p) || q
 
 stronger, weaker :: [a] -> (a -> Bool) -> (a -> Bool) -> Bool
 stronger xs p q = forall xs (\ x -> p x --> q x)
 weaker   xs p q = stronger xs q p
 
--- All properties from Exercise 3
-prop1 :: Int -> Bool
-prop1 x = even x && x > 3
+p1, p2, p3, p4 :: Int -> Bool
+p1 x = even x && x > 3
+p2 x = even x || x > 3
+p3 x = (even x && x > 3) || even x
+p4 x = even x
 
-prop2 :: Int -> Bool
-prop2 x = even x || x > 3
+props :: [Int -> Bool]
+props = [p1, p2, p3, p4]
 
-prop3 :: Int -> Bool
-prop3 x = (even x && x > 3) || even x
+domain :: [Int]
+domain = [(-10)..10]
 
-prop4 :: Int -> Bool
-prop4 x = (even x && x > 3) || even x
+propertyEvaluations :: [Int]
+propertyEvaluations = map (\l -> foldr (\x acc -> if x then acc+1 else acc) 0 l)
+                          (map (\x -> map (\y -> x y) domain) props)
 
--- Consider a small domain like [(−10)..10] as input
-testPropositions :: Int -> Int -> [Int]
-testPropositions x y = [x..y]
+-- The evaluations yield the following result: [4, 14, 11, 11]
+-- This means that p1 is the strongest, then come p3 and p4 and p2 is the weakest
 
-compar :: [a] -> (a -> Bool) -> (a -> Bool) -> String
-compar xs p q = let pq = stronger xs p q
-                    qp = stronger xs q p
-                in
-                  if pq && qp then "equivalent"
-                  else if pq  then "stronger"
-                  else if qp  then "weaker"
-                  else             "incomparable"
-
-{--
-a) Implement all properties from the Exercise 3 from Workshop 2 as Haskell
-functions of type Int -> Bool. Consider a small domain like [(−10)..10].
-
-b) Provide a descending strength list of all the implemented properties.
---}
+-- Time spent: 25 minutes
