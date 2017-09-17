@@ -1,3 +1,11 @@
+-- Assignment: Lab2
+-- Exercise: 1
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+--------------------------------------------------------------------------------
+
+module Lab2 where
+  
 import Data.List
 import Data.Char
 import System.Random
