@@ -4,6 +4,8 @@
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 --------------------------------------------------------------------------------
 
+module Lab2_4 where
+  
 import Data.List
 import Test.QuickCheck
 

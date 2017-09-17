@@ -1,3 +1,9 @@
+-- Assignment: Lab2
+-- Exercise: 2
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+--------------------------------------------------------------------------------
+
 module Lab2_2 where
 
 import Data.List
