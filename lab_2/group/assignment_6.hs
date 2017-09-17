@@ -1,4 +1,11 @@
---Exercise 5
+-- Assignment: Lab2
+-- Exercise: 6
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+--------------------------------------------------------------------------------
+
+module Lab2 where
+
 --Implementation rot13 
 rot13 :: String -> String
 rot13 [] = []
