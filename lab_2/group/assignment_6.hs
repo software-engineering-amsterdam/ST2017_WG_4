@@ -1,66 +1,51 @@
--- Assignment: Lab2
--- Exercise: 6
--- Authors: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi Ahanach
---------------------------------------------------------------------------------
+--Exercise 5
+--Implementation rot13 
+rot13 :: String -> String
+rot13 [] = []
+rot13 (h:t) = (shift h 13) : rot13 t
 
-module Lab2_6 where
-  
-import Data.List
-import Data.Char
-import System.Random
-import Test.QuickCheck
+shift :: Char -> Int -> Char
+shift c n | c <= 'z' && c >= 'a' = chr ((ord 'a') + (mod ((ord c) - (ord 'a') + n) 26)) | c <= 'Z' && c >= 'A' = chr ((ord 'A') + (mod ((ord c) - (ord 'A') + n) 26)) | otherwise = error "no letters" 
 
-{--
-Implementing and testing ROT13 encoding
+distance :: Char -> Char -> Int
+distance c1 c2 | c1 >= c2 = (ord c1) - (ord c2) | otherwise = 26 - (distance c2 c1)
 
-Specification
--
-- Spec 2
---}
+--test for interval 
+intervalArray :: String -> [Int]
+intervalArray [] = []
+intervalArray [a] = []
+intervalArray (h1:h2:t) = (distance h1 h2) : intervalArray (h2:t)
 
--- Simple implementation
+intervalTest :: String -> Bool
+intervalTest s = (intervalArray s) == (intervalArray (rot13 s))
 
-char2int :: Char -> Int
-char2int c = ord c - ord 'a'
+--test for difference
+differenceTest :: String -> Bool
+differenceTest s | length s > 0 = not (rot13 s == s) | otherwise = True
 
-int2char :: Int -> Char
-int2char n = chr (ord 'a' + n)
+--test for symmetry
+symmetryTest :: String -> Bool
+symmetryTest s = rot13 (rot13 s) == s
 
-shift :: Int -> Char -> Char
-shift n c | isLower c = int2char ((char2int c + n) `mod` 26)
-          | otherwise = c
+--test for frequency
+alphabet = ['a'..'z']
 
--- Encode is set to shift 13 due to ROT13
-encode :: String -> String
-encode xs = [shift 13 x | x <- xs]
+freqArray :: String -> String -> [Int]
+freqArray s [] = []
+freqArray s (h:t) = (findChar h s) : freqArray s t
 
-{--
-Series of QuickCheck testable properties
-- Length should be the samelength
-- postencoded is different than preencoded
-- sum (postencoded) - sum (preencoded) mod 13 == 0
-- Length of alphabet is 26 so ROT13 is a encoding which is shifts the cipher
-  half of the positions of the alphabet. That means that a double shift would
-  also decode the cipher. [C1, C2, .. , C26] The testale propertie:
-    - encode 13 + encode 13 == encode 0
-- Frequency of letters should preencoded should be same with postencoded
-  frequency
-- Integer interval inbetween letters is the same preencoding as postencoding
+freqAlphabet :: String -> [Int]
+freqAlphabet s = freqArray s alphabet
 
---}
+findChar :: Char -> String -> Int
+findChar c [] = 0
+findChar c (h:t) | toLower h == c = 1 + findChar c t | otherwise = findChar c t
 
--- Test implementation
+frequencyTest :: String -> Bool
+frequencyTest s = sort(filter (>0) (freqAlphabet s)) == sort(filter (>0) (freqAlphabet (rot13 s)))
 
-testROT13 :: String -> Bool
-testROT13 xs = encode (encode xs) == xs
+-- Filters the letters out the String for use in quickCheck
+filtLett :: String -> String
+filtLett s = filter (\x -> x >= 'a' && x <= 'z' && x >= 'A' && x <= 'Z') s
 
--- Frequency table of the alphabet
-table :: [Float]
-table = [8.1, 1.5, 2.8, 4.2, 12.7, 2.2, 2.0, 6.1, 7.0, 0.2, 0.8, 4.0, 2.4, 6.7,
-          7.5, 1.9, 0.1, 6.0, 6.3, 9.0, 2.8, 1.0, 2.4, 0.2, 2.0, 0.1]
-
--- proof xs
---     = forAll (elements xs) $ \c -> encode (encode xs) == xs
---
--- main = QuickCheck proof
+--test using quickcheck : quickCheck (\x -> frequencyTest (filtLett x) && symmetryTest (filtLett x) && differenceTest (filtLett x) && intervalTest (filtLett x))
