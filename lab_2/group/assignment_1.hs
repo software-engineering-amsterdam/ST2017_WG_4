@@ -23,3 +23,19 @@ checkIntervals list = countInInterval list 0.0 0.25 : countInInterval list 0.25 
 countInInterval ::  [Float] -> Float -> Float -> Int
 countInInterval [] a b = 0
 countInInterval (h:t) a b | (h >= a) && (h < b) = 1 + countInInterval t a b | otherwise = countInInterval t a b
+
+distribution :: Int -> IO [Int]
+distribution n = do
+ lst <- probs n
+ let zx = checkIntervals lst
+ return zx
+ 
+test :: [Int] -> Float -> Bool
+test [] n = True
+test (h:t) n | (fromIntegral h) <= (n/4 + (n/4 * 0.5)) &&  (fromIntegral h)  >= (n/4 - (n/4 * 0.5)) = test t n | otherwise = False
+
+runTest :: Int -> IO Bool 
+runTest n = do
+ lst <- distribution n
+ let zx = test lst (fromIntegral n)
+ return zx
