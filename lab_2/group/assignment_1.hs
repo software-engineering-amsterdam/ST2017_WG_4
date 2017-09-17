@@ -3,7 +3,10 @@
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 --------------------------------------------------------------------------------
-module Lab2 where
+import Data.List
+import Data.Char
+import System.Random
+import Test.QuickCheck
 
 probs :: Int -> IO [Float]
 probs 0 = return []
