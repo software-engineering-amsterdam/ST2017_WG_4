@@ -53,7 +53,7 @@ genIsosceles :: Integer -> [[Integer]]
 genIsosceles n = [[x,x,y] | x <- [1..n],
                             y <- [1..n],
                             x /= y,
-                            2 * y > x]
+                            2 * x > y]
 -- > genNoTriangles 10
 genNoTriangles :: Integer -> [[Integer]]
 genNoTriangles n = [[x,y,z] | x <- [0..n],
@@ -84,8 +84,3 @@ mainTest = testEquilateral &&
            testRectangular &&
            testIsoceles &&
            testNoTriangles
-
--- Steps
--- Look which relations of triangle are stronger to conclude order
--- generate all shapes
--- test if shapes are indeed categorised accordingly
