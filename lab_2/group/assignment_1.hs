@@ -3,27 +3,18 @@
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 --------------------------------------------------------------------------------
-
 module Lab2 where
-  
-import Data.List
-import Data.Char
-import System.Random
-import Test.QuickCheck
 
--- Given func
 probs :: Int -> IO [Float]
 probs 0 = return []
 probs n = do
-             p <- getStdRandom random
-             ps <- probs (n-1)
-             return (p:ps)
+ p <- getStdRandom random
+ ps <- probs (n-1) 
+ return (p:ps)
 
-testProbs :: IO (Int, Int, Int, Int)
-testProbs = do
-  x <- probs 10000000
-  let firstInterval = length $ filter (< 0.25) x
-  let secondInterval = length $ filter (\y -> (y >= 0.25) && (y < 0.5)) x
-  let thirdInterval = length $ filter (\y -> (y >= 0.5) && (y < 0.75)) x
-  let fourthInterval = length $ filter (>= 0.75) x
-  return (firstInterval, secondInterval, thirdInterval, fourthInterval)
+checkIntervals :: [Float] -> [Int]
+checkIntervals list = countInInterval list 0.0 0.25 : countInInterval list 0.25 0.5 : countInInterval list 0.5 0.75 : countInInterval list 0.75 1.0 : [] 
+
+countInInterval ::  [Float] -> Float -> Float -> Int
+countInInterval [] a b = 0
+countInInterval (h:t) a b | (h >= a) && (h < b) = 1 + countInInterval t a b | otherwise = countInInterval t a b
