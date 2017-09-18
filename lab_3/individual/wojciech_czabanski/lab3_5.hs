@@ -1,5 +1,5 @@
 -- Assignment: Lab3
--- Exercise: 1
+-- Exercise: 5
 -- Student: Wojciech Czabanski
 -- Time needed: 
 --------------------------------------------------------------------------
