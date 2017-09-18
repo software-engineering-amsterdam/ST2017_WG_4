@@ -8,39 +8,79 @@ data Shape = NoTriangle | Equilateral
 
 triangle :: Integer -> Integer -> Integer -> Shape
 triangle x y z
-  | isEquilateral x y z = Equilateral
-  | isRectangular x y z = Rectangular
-  | isIsosceles x y z   = Isosceles
-  | otherwise           = NoTriangle
+  | x + y <= z || x + z <= y || y + z <= x                   = NoTriangle
+  | x == y && y == z                                         = Equilateral
+  | x == y || y == z || z == x                               = Isosceles
+  | x^2 + y^2 == z^2 || x^2 + z^2 == y^2 || y^2 + z^2 == x^2 = Rectangular
+  | otherwise                                                = Other
+
+-- Shape indentify functions
 
 isEquilateral :: Integer -> Integer -> Integer -> Bool
-isEquilateral x y z = (x == y) && (y == z)
-
-isIsosceles :: Integer -> Integer -> Integer -> Bool
-isIsosceles x y z
-  | (x == y) && (x /= z) = True
-  | (y == z) && (y /= x) = True
-  | (z == x) && (z /= y) = True
+isEquilateral x y z
+  | (x == y) && (y == z) = True
   | otherwise            = False
 
 isRectangular :: Integer -> Integer -> Integer -> Bool
 isRectangular x y z
-  | x^2 + y^2 == z^2 = True
-  | x^2 + z^2 == y^2 = True
-  | y^2 + z^2 == x^2 = True
-  | otherwise        = False
+  | x^2 + y^2 == z^2 || x^2 + z^2 == y^2 || y^2 + z^2 == x^2 = True
+  | otherwise                                                = False
 
-genEquilateral :: Integer -> [[Integer]]
-genEquilateral n = permutations [n, n, n]
+isIsosceles :: Integer -> Integer -> Integer -> Bool
+isIsosceles x y z
+  | (x == y) && (x /= z) || (y == z) && (y /= x) || (z == x) && (z /= y) = True
+  | otherwise                                                            = False
 
--- https://mail.haskell.org/pipermail/beginners/2011-November/008991.html
-combinations :: Int -> [Int] -> [[Int]]
-combinations 0 _ = [[]]
-combinations _ [] = []
-combinations n xs@(y:ys)
- | n < 0     = []
- | otherwise = case drop (n-1) xs of
-                 [ ] -> []
-                 [_] -> [xs]
-                 _   -> [y:c | c <- combinations (n-1) ys]
-                               ++ combinations n ys
+isNoTriangle :: Integer -> Integer -> Integer -> Bool
+isNoTriangle x y z
+  |  x + y < z || x + z < y || y + z < x = True
+  | otherwise                            = False
+
+-- Shape generation functions
+
+-- > genEquilaterals 10
+genEquilaterals :: Integer -> [[Integer]]
+genEquilaterals n = [[x,x,x] | x <- [1..n]]
+
+-- > genRectangulars 10
+genRectangulars :: Integer -> [[Integer]]
+genRectangulars n = [[x,y,z] | x <- [1..n],
+                               y <- [1..n],
+                               z <- [1..n],
+                               (x^2) + (y^2) == (z^2)]
+-- > genIsosceless 10
+genIsosceles :: Integer -> [[Integer]]
+genIsosceles n = [[x,x,y] | x <- [1..n],
+                            y <- [1..n],
+                            x /= y,
+                            2 * x > y]
+-- > genNoTriangles 10
+genNoTriangles :: Integer -> [[Integer]]
+genNoTriangles n = [[x,y,z] | x <- [0..n],
+                              y <- [0..(x `div` 2)],
+                              z <- [0..(x `div` 2)]]
+
+-- Tests
+
+testEquilateral :: Bool
+testEquilateral = testHelper 100 genEquilaterals Equilateral
+
+testRectangular :: Bool
+testRectangular = testHelper 100 genRectangulars Rectangular
+
+testIsoceles :: Bool
+testIsoceles = testHelper 100 genIsosceles Isosceles
+
+testNoTriangles :: Bool
+testNoTriangles = testHelper 100 genNoTriangles NoTriangle
+
+testHelper :: Integer -> (Integer -> [[Integer]]) -> Shape -> Bool
+testHelper x y z = all (\x -> (triangle (x !! 0) (x !! 1) (x !! 2)) == z) (y x)
+
+-- Main
+
+mainTest :: Bool
+mainTest = testEquilateral &&
+           testRectangular &&
+           testIsoceles &&
+           testNoTriangles

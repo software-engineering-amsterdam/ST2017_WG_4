@@ -3,6 +3,16 @@ import Data.Char
 import System.Random
 import Test.QuickCheck
 
+-- Help functions from workshop
+compar :: [a] -> (a -> Bool) -> (a -> Bool) -> String
+compar xs p q = let pq = stronger xs p q
+                    qp = stronger xs q p
+                in
+                  if pq && qp then "equivalent"
+                  else if pq  then "stronger"
+                  else if qp  then "weaker"
+                  else             "incomparable"
+
 (-->) :: Bool -> Bool -> Bool
 p --> q = (not p) || q
 
@@ -24,20 +34,11 @@ prop3 :: Int -> Bool
 prop3 x = (even x && x > 3) || even x
 
 prop4 :: Int -> Bool
-prop4 x = (even x && x > 3) || even x
+prop4 x = even x
 
 -- Consider a small domain like [(−10)..10] as input
 testPropositions :: Int -> Int -> [Int]
 testPropositions x y = [x..y]
-
-compar :: [a] -> (a -> Bool) -> (a -> Bool) -> String
-compar xs p q = let pq = stronger xs p q
-                    qp = stronger xs q p
-                in
-                  if pq && qp then "equivalent"
-                  else if pq  then "stronger"
-                  else if qp  then "weaker"
-                  else             "incomparable"
 
 {--
 a) Implement all properties from the Exercise 3 from Workshop 2 as Haskell

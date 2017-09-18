@@ -18,6 +18,7 @@ import Test.QuickCheck
 -- charToNumber: https://stackoverflow.com/questions/1706154/replacing-characters-with-numbers-in-haskell
 -- evalMapValue: https://stackoverflow.com/questions/19960419/how-to-delete-just-in-maybe-string-or-maybe-int-in-haskell
 
+-- For brevity the list is limited to 3 IBAN country codes and lengths.
 ibanLengths :: [([Char], Int)]
 ibanLengths = [("PL", 28), ("GB", 22), ("NL", 18)]
 
@@ -58,15 +59,22 @@ padResult n | n < 10 = "0" ++ (show n)
 generateCheckDigits :: String -> String
 generateCheckDigits iban = padResult (98 - (convertToNumber (clearCheckDigits iban) `mod` 97))
 
+checkIbanChecksum :: String -> Bool
+checkIbanChecksum ibanNum = ((convertToNumber ibanNum) `mod` 97 == 1)
+
 iban :: String -> Bool
-iban str = (checkIbanLength str) && ((convertToNumber str) `mod` 97 == 1)
+iban str = (checkIbanLength str) && (checkIbanChecksum str)
 
+-- Correct IBAN number Examples -> iban function yields True
+correctIbanPL, correctIbanNL, correctIbanUK :: String
+correctIbanPL = "PL60102010260000042270201111"
+correctIbanUK = "GB82WEST12345698765432"
+correctIbanNL = "NL39RABO0300065264"
 
+-- Incorrect IBAN number Examples -> iban function yields False
+incorrectIbanPL, incorrectIbanNL, incorrectIbanUK, incorrectIbanCC :: String
+incorrectIbanCC = "CC39RABO0300065264"          -- Incorrect country code -> fails the checkIbanLength property
+incorrectIbanPL = "PL6010201026001112"          -- Incorrect length -> fails the checkIbanLength property
+incorrectIbanUK = "GB82WEST56345698765432"      -- Incorrect IBAN digits -> fails the checkIbanChecksum property
+incorrectIbanNL = "NL40RABO0300065264"          -- Incorrect check digit -> fails the checkIbanChecksum property
 
--- Examples
-ibanPL, ibanNL, ibanUK :: String
-ibanPL = "PL60102010260000042270201111"
-ibanUK = "GB29RBOS60161331926819"
-ibanNL = "NL39RABO0300065264"
-
--- Time spent: 75 minutes
