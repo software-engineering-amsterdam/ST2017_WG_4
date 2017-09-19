@@ -1,7 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 3
 -- Student: Wojciech Czabanski
--- Time needed: 
+-- Time needed: 10 minutes
 --------------------------------------------------------------------------
 
 module Lab3 where

@@ -1,7 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 1
 -- Student: Wojciech Czabanski
--- Time needed: 35 minutes
+-- Time needed: 40 minutes
 --------------------------------------------------------------------------
 
 module Lab3 where
@@ -10,7 +10,7 @@ import Test.QuickCheck
 import Lecture3
 
 contradiction :: Form -> Bool
-contradiction f = (any (\v -> evl v f) (allVals f)) == False
+contradiction f = (satisfiable f) == False
 
 tautology :: Form -> Bool 
 tautology f = all (\v -> evl v f) (allVals f)
@@ -31,6 +31,3 @@ entailsTest1 = pt
 entailsTest2 = Neg (Neg pt)
 equivTest1 = Neg (Cnj [pt, qt])
 equivTest2 = Dsj [Neg pt, Neg qt]
-
--- TODO:
--- prepare tests for the forms

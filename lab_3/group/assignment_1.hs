@@ -1,29 +1,32 @@
--- Assignment: Lab2
+-- Assignment: Lab3
 -- Exercise: 1
 -- Authors: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi Ahanach
+--Wojciech Czabański, Elias El Khaldi Ahanach
 --------------------------------------------------------------------------------
-
-module Lab2 where
-  
+module Lab3 where
 import Data.List
-import Data.Char
-import System.Random
 import Test.QuickCheck
+import Lecture3
 
--- Given func
-probs :: Int -> IO [Float]
-probs 0 = return []
-probs n = do
-             p <- getStdRandom random
-             ps <- probs (n-1)
-             return (p:ps)
+contradiction :: Form -> Bool
+contradiction f = (satisfiable f) == False
 
-testProbs :: IO (Int, Int, Int, Int)
-testProbs = do
-  x <- probs 10000000
-  let firstInterval = length $ filter (< 0.25) x
-  let secondInterval = length $ filter (\y -> (y >= 0.25) && (y < 0.5)) x
-  let thirdInterval = length $ filter (\y -> (y >= 0.5) && (y < 0.75)) x
-  let fourthInterval = length $ filter (>= 0.75) x
-  return (firstInterval, secondInterval, thirdInterval, fourthInterval)
+tautology :: Form -> Bool 
+tautology f = all (\v -> evl v f) (allVals f)
+
+entails :: Form -> Form -> Bool
+entails f1 f2 = all (\v -> (not (evl (fst v) f1)) || (evl (snd v) f2) ) (zipWith (\x y -> (x, y)) (allVals f1) (allVals f2)) 
+
+equiv :: Form -> Form -> Bool
+equiv f1 f2 =all (\v -> (evl (fst v) f1) == (evl (snd v) f2) ) (zipWith (\x y -> (x, y)) (allVals f1) (allVals f2))
+
+pt = Prop 1
+qt = Prop 2
+contrTest, tautologyTest, entailsTest1, entailsTest2, equivTest1, equivTest2 :: Form
+contrTest = Cnj [Neg pt, pt]
+tautologyTest = Dsj [Neg pt, pt]
+equivTest = Equiv pt (Neg (Neg pt))
+entailsTest1 = pt
+entailsTest2 = Neg (Neg pt)
+equivTest1 = Neg (Cnj [pt, qt])
+equivTest2 = Dsj [Neg pt, Neg qt]
