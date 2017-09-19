@@ -14,7 +14,7 @@ import Lecture3
 -- 2. Matching brckets
 -- 3. No empty brackets
 -- 4. show (parse A) == A
--- 5. 
+-- 5. Random formulas
 
 -- Incorrect input past incorrect brackets is discarded
 parseMalformedBrackets :: String -> Bool
