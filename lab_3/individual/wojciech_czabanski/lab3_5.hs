@@ -1,7 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 5
 -- Student: Wojciech Czabanski
--- Time needed: 70 minutes
+-- Time needed: 90 minutes
 -- Inspirations: https://stackoverflow.com/questions/6187679/how-to-create-haskell-permutation
 --------------------------------------------------------------------------
 
