@@ -1,6 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 1
--- Student: Wojciech Czabanski
+-- Authors: Quinten Heijn, Dylan Bartels,
+-- Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time needed: 55 minutes
 --------------------------------------------------------------------------
 
