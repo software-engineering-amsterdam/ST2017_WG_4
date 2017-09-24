@@ -42,7 +42,7 @@ instance Arbitrary Form where
 
 -- Testable properties.
 prop_checkCNF :: Form -> Bool
-prop_checkCNF x = equiv x $ convertCNF x
+prop_checkCNF x = equiv x $ cnf x
 -- > quickCheck (forAll (arbitrary :: Gen Form) prop_isSatisfiable)
 
 -- Test for testable properties.
