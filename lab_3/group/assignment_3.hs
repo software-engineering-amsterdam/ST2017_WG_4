@@ -18,15 +18,19 @@ cnf x = convertCNF (nnf (arrowfree (x)))
 -- *(+(-1 -2) +(-3 -4))
 
 convertCNF :: Form -> Form
-convertCNF (Cnj (h:t)) = formatF (Cnj (map convertCNF (h:t)))
+convertCNF (Cnj [h]) = convertCNF h
 convertCNF (Dsj [x]) = convertCNF x
+convertCNF (Cnj lst) = formatF (Cnj (map convertCNF lst))
+convertCNF (Dsj [h1,h2]) = formatF (distr (convertCNF h1) (convertCNF (h2))) 
 convertCNF (Dsj (h:t)) = formatF (distr (convertCNF h) (convertCNF (Dsj t))) 
 convertCNF x = x
 
 distr :: Form -> Form -> Form
 distr (Cnj [h]) y = Dsj [h,y]
+distr (Cnj [h1,h2]) y = Cnj [(distr h1 y),(distr h2 y)]
 distr (Cnj (h:t)) y = Cnj [(distr h y),(distr (Cnj t) y)]
 distr x (Cnj [h]) = Dsj [x,h]
+distr x (Cnj [h1,h2]) = Cnj [(distr x h1),(distr x h2)]
 distr x (Cnj (h:t)) = Cnj [(distr x h),(distr x (Cnj t))]
 distr x y = Dsj [x,y]
 
