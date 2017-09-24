@@ -1,7 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 5
 -- Student: Wojciech Czabanski
--- Time needed: 90 minutes
+-- Time needed: 240 minutes
 -- Inspirations: https://stackoverflow.com/questions/6187679/how-to-create-haskell-permutation
 --------------------------------------------------------------------------
 
@@ -17,18 +17,22 @@ import Assignment4
 type Clause  = [Int]
 type Clauses = [Clause]
 
+absoluteValue :: Int -> Int
+absoluteValue n | n >= 0 = n
+                | otherwise  = -n
+
 -- The function converts any form in CNF to the clause form
 cnf2cls :: Form -> Clauses
-cnf2cls (Prop x) = [[read (show x)]]
-cnf2cls (Neg x) = [[-read (show x)]]
-cnf2cls (Dsj fs) = [map (\x -> read (show x)) fs]
+cnf2cls (Prop x) = [[(read (show x))::Int]]
+cnf2cls (Neg x) = [[-(read (show x))::Int]]
+cnf2cls (Dsj fs) = [map (\x -> (read (show x))::Int) fs]
 cnf2cls (Cnj fs) = map (\x -> cnf2clsDsj x) fs
 
 -- A helper function for mapping a disjunction Form to a Clause
 cnf2clsDsj :: Form -> Clause
-cnf2clsDsj (Prop x) = [read (show x)]
-cnf2clsDsj (Neg x) = [-read (show x)]
-cnf2clsDsj (Dsj fs) = map (\x -> read (show x)) fs 
+cnf2clsDsj (Prop x) = [(read (show x))::Int]
+cnf2clsDsj (Neg x) = [-(read (show x))::Int]
+cnf2clsDsj (Dsj fs) = map (\x -> (read (show x))::Int) fs 
 
 -------------------- 
 -- Test infrastructure
@@ -50,11 +54,15 @@ flatten c = head c ++ (flatten (tail c))
 
 -- Calculates the number of atomic formulas in a clause
 numFormsInClauses :: Clauses -> Int
-numFormsInClauses c = length (nub (map (\x -> if x < 0 then -x else x) (flatten c)))
+numFormsInClauses c = length (nub (map (\x -> (absoluteValue x)) (flatten c)))
+
+evalClauseAtom :: Int -> Bool -> Bool
+evalClauseAtom c v | c < 0 = not v
+                   | c >= 0 = v
 
 -- Evaluates a clause for a set of valuations
 evalClause :: Clause -> [Bool] -> Bool
-evalClause c bs = foldr (\x acc -> acc || (bs !! (x-1))) False c
+evalClause c bs = foldr (\x acc -> acc || (evalClauseAtom x (bs !! ((absoluteValue x)-1)))) False c
 
 -- Evaluates a list of clauses for a set of valuations
 evalClauses :: Clauses -> [Bool] -> Bool
@@ -102,7 +110,7 @@ testComplex = Cnj [pt, Dsj [pt, Neg qt]]
 
 -- Expected output: [[1], [1, 2], [-3], [-3, 2]]
 testAll :: Form
-testAll = Cnj [pt, Dsj [pt, qt], Neg rt, Dsj [Neg rt,qt]]
+testAll = Cnj [pt, Dsj [pt, qt], Neg rt, Dsj [Neg rt, qt]]
 
 -------------------- 
 -- Automated testing process
@@ -116,6 +124,5 @@ testAll = Cnj [pt, Dsj [pt, qt], Neg rt, Dsj [Neg rt,qt]]
 -- 4. Test usage:
 prop_isEquiv :: Form -> Bool
 prop_isEquiv f = checkEquivalence f (cnf2cls (cnf f))
---quickCheck (forAll (arbitrary :: Gen Form) prop_isEquiv)
-
+-- > quickCheck (forAll (arbitrary :: Gen Form) prop_isEquiv)
 

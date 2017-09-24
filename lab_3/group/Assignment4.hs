@@ -37,4 +37,6 @@ instance Arbitrary Form where
                x <- (arbitrary :: Gen Form)
                y <- (arbitrary :: Gen Form)
                return $ Equiv x y
-               
+
+prop_isSatisfiable :: Form -> Bool
+prop_isSatisfiable x = satisfiable x
