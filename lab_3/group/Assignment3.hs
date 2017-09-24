@@ -5,7 +5,7 @@
 -- Time needed: 3~4h
 --------------------------------------------------------------------------
 
-module Lab3 where
+module Assignment3 where
 import Data.List
 import Test.QuickCheck
 import Lecture3

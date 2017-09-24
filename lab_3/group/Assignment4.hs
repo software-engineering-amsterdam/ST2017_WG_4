@@ -1,6 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 4
--- Student:
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time needed:
 --------------------------------------------------------------------------
 
@@ -9,6 +10,15 @@ import Data.List
 import Control.Monad
 import Test.QuickCheck
 import Lecture3
+
+{--
+testable properties are:
+- satisfiable
+
+To run all the tests:
+main
+--}
+
 
 -- Generate bound form:
 arbitrarySizedForm :: Int -> Gen Form
@@ -27,8 +37,8 @@ arbitrarySizedForm n | n>0 =
 
 instance Arbitrary Form where
   arbitrary = sized arbitrarySizedForm
--- generate arbitrary :: IO (Form Int)
--- sample $ (arbitrary :: Gen (Form Int))
+-- > generate arbitrary :: IO Form
+-- > sample $ (arbitrary :: Gen Form)
 
 -- Testable Propertys
 

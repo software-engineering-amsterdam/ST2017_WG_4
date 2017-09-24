@@ -96,3 +96,9 @@ checkEquivalence f c = compareFormWithClauses f c (genSubstitutions (numFormsInC
 -- 4. Test usage
 -- testEquiv :: Form -> Bool
 -- testEquiv f = (compareFormWithClauses f (cnf2cls f))
+
+-- Problem: 
+-- Generated form: *((1<=>1))
+-- Gets converted by `cnf` to: *(+(1 -1) +(1 -1) +(1 *(-1 -1)))
+-- Should be: *(+(1 -1) +(1 -1) +(1 -1)))
+-- Which is not CNF
