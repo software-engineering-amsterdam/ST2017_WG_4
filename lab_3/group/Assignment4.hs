@@ -41,14 +41,36 @@ instance Arbitrary Form where
 -- > sample $ (arbitrary :: Gen Form)
 
 -- Testable properties.
-prop_checkCNF :: Form -> Bool
-prop_checkCNF x = equiv x $ cnf x
+prop_checkEquiv :: Form -> Bool
+prop_checkEquiv x = equiv x $ cnf x
 -- > quickCheck (forAll (arbitrary :: Gen Form) prop_isSatisfiable)
+
+prop_checkCNF :: Form -> Bool
+prop_checkCNF x = testOperators $ cnf x
+
+-- Test whether a form has the operators allowed for CNF. Also checks whether the only Conjunction is the one in the beginning ("*(...)")
+testOperators :: Form -> Bool
+testOperators (Cnj []) = True
+testOperators (Cnj (h:t)) = testOperators h && testOperators (Cnj t)
+testOperators x = testOperators2 x
+
+-- Tests whether the inside ("*(..inside..)") of the formula does not contain forbidden operators
+testOperators2 :: Form -> Bool
+testOperators2 (Cnj x) = False
+testOperators2 (Dsj []) = True
+testOperators2 (Dsj (h:t)) = testOperators2 h && testOperators2 (Dsj t)
+testOperators2 (Neg (Prop x)) = True
+testOperators2 (Neg (x)) = False
+testOperators2 (Prop x) = True
+testOperators2 (Impl x y) = False
+testOperators2 (Equiv x y) = False
+
 
 -- Test for testable properties.
 test :: IO ()
 test =
- do quickCheck (withMaxSuccess 10 prop_checkCNF)
+ do quickCheck (withMaxSuccess 10 prop_checkEquiv)
+    quickCheck (withMaxSuccess 10 prop_checkCNF)
     return ()
 
 main :: IO ()
