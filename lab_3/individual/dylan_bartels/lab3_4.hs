@@ -8,116 +8,71 @@ module Lab3 where
 import Data.List
 import Control.Monad
 import Test.QuickCheck
-import Lecture3
 
-data Point = Pt Int Int
+type Name = Int
 
-instance Show (Point) where
-  show (Pt x y) = "{" ++ show x ++ "," ++ show y ++ "}"
+-- Needs to have 'a' to scale length of generated Form with input from quickcheck
+data Form a = Prop Name
+          | Neg a (Form a)
+          | Cnj a (Form a)
+          | Dsj a (Form a)
+          | Impl a (Form a) (Form a)
+          | Equiv a (Form a) (Form a)
+          deriving (Eq,Ord)
 
-instance Arbitrary Point where
-   arbitrary = do
-     x <- arbitrary
-     y <- arbitrary
-     return $ Pt x y
--- > sample $ (arbitrary :: Gen Point)
+instance Show (Form a) where
+  show (Prop x)   = show x
+  show (Neg f x)    = '-' : show x
+  show (Cnj x fs)     = "*(" ++ showLst [fs] ++ ")"
+  show (Dsj x fs)     = "+(" ++ showLst [fs] ++ ")"
+  show (Impl x f1 f2)  = "(" ++ show f1 ++ "==>"
+                           ++ show f2 ++ ")"
+  show (Equiv x f1 f2)  = "(" ++ show f1 ++ "<=>"
+                           ++ show f2 ++ ")"
 
-data Set a = Set [a]
-
-instance (Show a) => Show (Set a) where
-    show s = showSet s where
-         showSet (Set []) = "{}"
-         showSet (Set (x:xs)) = "{" ++ show x ++ showSubSet xs ++ "}" where
-              showSubSet [] = ""
-              showSubSet (x:xs) = "," ++ show x ++ showSubSet xs
-
-instance (Arbitrary a) => Arbitrary (Set a) where
-    arbitrary = do
-                list <- arbitrary
-                return $ Set list
--- > sample $ (arbitrary :: Gen (Set Int))
--- > sample $ (arbitrary :: Gen (Set Point))
-
--- type Name = Int
---
--- data Form = Prop Name
---           | Neg  Form
---           | Cnj [Form]
---           | Dsj [Form]
---           | Impl Form Form
---           | Equiv Form Form
---
--- instance Show Form where
---   show (Prop x)       = show x
---   show (Neg f)        = '-' : show f
---   show (Cnj fs)       = "*(" ++ showLst fs ++ ")"
---   show (Dsj fs)       = "+(" ++ showLst fs ++ ")"
---   show (Impl f1 f2)   = "(" ++ show f1 ++ "==>" ++ show f2 ++ ")"
---   show (Equiv f1 f2)  = "(" ++ show f1 ++ "<=>" ++ show f2 ++ ")"
---
--- showLst,showRest :: [Form] -> String
--- showLst [] = ""
--- showLst (f:fs) = show f ++ showRest fs
--- showRest [] = ""
--- showRest (f:fs) = ' ': show f ++ showRest fs
-
--- Generate unbounded forms:
-instance Arbitrary Form where
-   arbitrary = oneof [arbitraryProp, arbitraryNeg,
-                      arbitraryProp, arbitraryCnj,
-                      arbitraryProp, arbitraryDsj,
-                      arbitraryProp, arbitraryImpl,
-                      arbitraryEquiv]
-      where arbitraryProp = do
-              x <- arbitrary
-              return $ Prop x
-            arbitraryNeg = do
-              x <- (arbitrary :: Gen Form)
-              return $ Neg x
-            arbitraryCnj = do
-              x <- (arbitrary :: Gen Form)
-              return $ Cnj [x]
-            arbitraryDsj = do
-              x <- (arbitrary :: Gen Form)
-              return $ Dsj [x]
-            arbitraryImpl = do
-              x <- (arbitrary :: Gen Form)
-              y <- (arbitrary :: Gen Form)
-              return $ Impl x y
-            arbitraryEquiv = do
-              x <- (arbitrary :: Gen Form)
-              y <- (arbitrary :: Gen Form)
-              return $ Equiv x y
--- > sample $ (arbitrary :: Gen Form)
-
-prop_isSatisfiable :: Form -> Bool
-prop_isSatisfiable x = satisfiable x
--- > quickCheck (forAll (arbitrary :: Gen Form) prop_isSatisfiable)
--- FAILED:
--- > (--2<=>+(*(-2)))
--- > --2<=>-2)
-
-contradiction :: Form -> Bool
-contradiction f = (satisfiable f) == False
--- > quickCheck (forAll (arbitrary :: Gen Form) prop_isSatisfiable)
-
-tautology :: Form -> Bool
-tautology f = all (\v -> evl v f) (allVals f)
--- > quickCheck (forAll (arbitrary :: Gen Form) tautology)
-
-entails :: Form -> Form -> Bool
-entails f1 f2 = all (\v -> (not (evl (fst v) f1)) || (evl (snd v) f2) ) (zipWith (\x y -> (x, y)) (allVals f1) (allVals f2))
-
-equiv :: Form -> Form -> Bool
-equiv f1 f2 =  all (\v -> (evl (fst v) f1) == (evl (snd v) f2) ) (zipWith (\x y -> (x, y)) (allVals f1) (allVals f2))
+showLst,showRest :: [Form a] -> String
+showLst [] = ""
+showLst (f:fs) = show f ++ showRest fs
+showRest [] = ""
+showRest (f:fs) = ' ': show f ++ showRest fs
 
 -- Generate bound form:
--- arbitrarySizedForm :: Arbitrary a => Gen (Form a)
--- arbitrarySizedForm = sized form where
---   form :: Arbitrary a => Int -> Gen (Form a)
---   form 0       = return Prop
---   form n | n>0 = oneof [return Prop m,
---                         return Neg subform,
---                         return Cnj [subform]]
---                   where subform = form (n `div` 2)
---                         m = arbitrary
+arbitrarySizedForm :: Arbitrary a => Int -> Gen (Form a)
+arbitrarySizedForm 0       = do
+  t  <- arbitrary
+  return (Prop t)
+arbitrarySizedForm n | n>0 =
+  oneof [liftM2 Neg arbitrary subForm,
+         liftM2 Cnj arbitrary subForm,
+         liftM2 Dsj arbitrary subForm,
+         liftM3 Impl arbitrary subForm subForm,
+         liftM3 Equiv arbitrary subForm subForm]
+       where subForm = arbitrarySizedForm (n `div` 2)
+
+
+instance (Arbitrary a) => Arbitrary (Form a) where
+  arbitrary = sized arbitrarySizedForm
+-- generate arbitrary :: IO (Form Int)
+-- sample $ (arbitrary :: Gen (Form Int))
+
+
+
+-- satisfiable :: Form a -> Bool
+-- satisfiable f = any (\ v -> evl v f) (allVals f)
+--
+-- evl :: Valuation -> Form a -> Bool
+-- evl [] (Prop c)    = error ("no info: " ++ show c)
+-- evl ((i,b):xs) (Prop c)
+--      | c == i    = b
+--      | otherwise = evl xs (Prop c)
+-- evl xs (Neg f)  = not (evl xs f)
+-- evl xs (Cnj fs) = all (evl xs) fs
+-- evl xs (Dsj fs) = any (evl xs) fs
+-- evl xs (Impl f1 f2) = evl xs f1 --> evl xs f2
+-- evl xs (Equiv f1 f2) = evl xs f1 == evl xs f2
+--
+-- -- Testable Propertys
+--
+-- prop_isSatisfiable :: Form a -> Bool
+-- prop_isSatisfiable x = satisfiable x
+-- > quickCheck (forAll (arbitrary :: Gen Form) prop_isSatisfiable)
