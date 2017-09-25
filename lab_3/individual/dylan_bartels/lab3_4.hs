@@ -15,7 +15,7 @@ arbitrarySizedForm :: Int -> Gen Form
 arbitrarySizedForm 0       = do
   t  <- arbitrary
   return (Prop t)
-arbitrarySizedForm n | n>0 =
+arbitrarySizedForm n | n > 0 =
   oneof [liftM Neg subForm,
          liftM Cnj subFormBracets,
          liftM Dsj subFormBracets,
