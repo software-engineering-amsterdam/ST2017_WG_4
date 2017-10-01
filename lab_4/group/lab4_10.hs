@@ -23,8 +23,9 @@
 -- producing a palindrome: 4668731596684224866951378664 (53 iterations, 28-digits).
 -- Surprisingly, there are palindromic numbers that are themselves Lychrel numbers; the first example is 4994.
 -- How many Lychrel numbers are there below ten-thousand?
+--------------------------------------------------------------------------
 
-module Lab4 where
+module Assignment10 where
 import Data.List
 import System.Random
 import Test.QuickCheck

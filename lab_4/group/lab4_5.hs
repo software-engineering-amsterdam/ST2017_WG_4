@@ -2,7 +2,7 @@
 -- Exercise: 5
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
--- Time needed: 30 min
+-- Time needed: 55 min
 
 -- Suppose we implement binary relations as list of pairs, Haskell type [(a,a)]. Assume the following definition:
 -- > type Rel a = [(a,a)]
@@ -14,7 +14,7 @@
 -- (Deliverable: Haskell program, indication of time spent.)
 
 --------------------------------------------------------------------------
-module Lab4 where
+module Assignment5 where
 
 import Data.List
 import System.Random
