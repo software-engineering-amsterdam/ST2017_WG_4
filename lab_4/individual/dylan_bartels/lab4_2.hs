@@ -9,7 +9,11 @@
 
 -- (Deliverables: two random test generators, indication of time spent.)
 
+-- Information used
 -- https://hackage.haskell.org/package/QuickCheck-2.10.0.1/docs/Test-QuickCheck-Gen.html
+-- if/then/else for IO Bool https://mail.haskell.org/pipermail/haskell-cafe/2006-November/019752.html
+-- https://stackoverflow.com/questions/31036474/haskell-checking-if-all-list-elements-are-unique
+-- Test if it's a set (http://geekyplatypus.com/category/haskell/)
 
 --------------------------------------------------------------------------
 module Lab4 where
@@ -21,7 +25,6 @@ import SetOrd
 import Control.Monad
 
 -- From scratch
-
 genSet :: Int -> Int -> Int -> IO (Set Int)
 genSet n mini maxi
   | maxi - mini < n = error "Input out of bound"
@@ -43,22 +46,21 @@ genQuickCheckSet 0 = return emptySet
 genQuickCheckSet n = do sampleSet <- arbitrary
                         return (list2set sampleSet)
 
--- Test if it's a set (http://geekyplatypus.com/category/haskell/)
+-- Testable properties
 prop_isSet :: Set Int -> Bool
 prop_isSet (Set x) = isSet x
 -- > quickCheck (forAll (sized genQuickCheckSet) prop_isSet)
 
--- https://stackoverflow.com/questions/31036474/haskell-checking-if-all-list-elements-are-unique
 isSet :: [Int] -> Bool
 isSet []     = True
 isSet (x:xs) = x `notElem` xs && isSet xs
 
+-- Helper functions
 convertIO :: IO (Set Int) -> IO Bool
 convertIO x = do
   ioSet <- x
   return (prop_isSet ioSet)
 
--- if/then/else for IO Bool https://mail.haskell.org/pipermail/haskell-cafe/2006-November/019752.html
 if' b t e = if b then t else e
 ifM = liftM3 if'
 

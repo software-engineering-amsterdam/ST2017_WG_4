@@ -1,6 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 2
--- Student: Dylan Bartels
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time needed: 4 hours 30 min
 
 -- Implement a random data generator for the datatype Set Int, where Set is as
