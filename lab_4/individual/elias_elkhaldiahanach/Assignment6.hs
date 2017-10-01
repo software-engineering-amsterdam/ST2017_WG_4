@@ -26,8 +26,3 @@ trClos x = trClos2 (length x) x
 trClos2 :: Ord a => Int -> Rel a -> Rel a
 trClos2 i x | (length (noDup(x ++ (x @@ x)))) == i = x | otherwise = trClos2 (length (noDup(x ++ (x @@ x)))) (noDup(x ++ (x @@ x)))
 
-noDup :: Ord a => Rel a -> Rel a
-noDup lst = set2list(list2set lst)
-
-set2list :: Ord a => Set a -> [a]
-set2list (Set lst) = lst
