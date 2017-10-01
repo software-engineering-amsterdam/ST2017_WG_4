@@ -4,14 +4,14 @@
 -- Time needed: 90 minutes
 --------------------------------------------------------------------------
 
-module Assignment7 where
+module Lab4_7 where
     
 import Data.List
 import System.Random
 import Test.QuickCheck  
 import SetOrd
-import Assignment6
-import Assignment5
+import Lab4_6
+import Lab4_5
 
 -- Additional function for counting the number of individual nodes (variables) in the relation, from now on denoted as n
 nodes :: Ord a => Rel a -> [a]

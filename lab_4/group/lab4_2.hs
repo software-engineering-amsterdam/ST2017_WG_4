@@ -17,7 +17,7 @@
 -- Test if it's a set (http://geekyplatypus.com/category/haskell/)
 
 --------------------------------------------------------------------------
-module Assignment2 where
+module Lab4_2 where
 
 import Data.List
 import System.Random
