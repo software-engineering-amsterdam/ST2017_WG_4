@@ -9,7 +9,7 @@
 -- First use your own generator, next use QuickCheck.
 --------------------------------------------------------------------------
 
-module Assignment3 where
+module Lab4_3 where
 
 import Data.List
 import System.Random

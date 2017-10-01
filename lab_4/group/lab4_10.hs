@@ -25,7 +25,7 @@
 -- How many Lychrel numbers are there below ten-thousand?
 --------------------------------------------------------------------------
 
-module Assignment10 where
+module Lab4_10 where
 import Data.List
 import System.Random
 import Test.QuickCheck

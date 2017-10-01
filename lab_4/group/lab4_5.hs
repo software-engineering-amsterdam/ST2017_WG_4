@@ -14,7 +14,7 @@
 -- (Deliverable: Haskell program, indication of time spent.)
 
 --------------------------------------------------------------------------
-module Assignment5 where
+module Lab4_5 where
 
 import Data.List
 import System.Random

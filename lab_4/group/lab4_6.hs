@@ -2,7 +2,7 @@
 -- Exercise: 6
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi 
--- Time needed: 20 minutes
+-- Time needed: 50 minutes
 --------------------------------------------------------------------------
 -- Use the datatype for relations from the previous exercise, plus {...} to define a function
 -- trClos :: Ord a => Rel a -> Rel a 
@@ -11,13 +11,13 @@
 -- (Deliverable: Haskell program, indication of time spent.)
 --------------------------------------------------------------------------
 
-module Assignment6 where
+module Lab4_6 where
     
 import Data.List
 import System.Random
 import Test.QuickCheck  
 import SetOrd
-import Assignment5
+import Lab4_5
 
 --
 infixr 5 @@
