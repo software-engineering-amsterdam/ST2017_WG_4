@@ -1,7 +1,7 @@
 -- Assignment: Lab4
 -- Exercise: 8
 -- Student: Elias el Khaldi
--- Time needed:  minutes
+-- Time needed: 30 minutes
 --------------------------------------------------------------------------
 
 module Assignment8 where
