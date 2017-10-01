@@ -12,7 +12,7 @@ import Lecture3
 -- Test whether a form has the operators allowed for CNF. Also checks whether the only Conjunction is the one in the beginning ("*(...)")
 testOperators :: Form -> Bool
 testOperators (Cnj []) = True
-testOperators (Cnj (h:t)) = testOperators h && testOperators (Cnj t) 
+testOperators (Cnj (h:t)) = testOperators2 h && testOperators2 (Cnj t) 
 testOperators x = testOperators2 x
 
 -- Tests whether the inside ("*(..inside..)") of the formula does not contain forbidden operators
