@@ -22,6 +22,7 @@ import SetOrd
 setIntersection, setUnion, setDifference :: (Ord a) => Set a -> Set a -> Set a
 setIntersection (Set xs) (Set ys) = Set (xs `intersect` ys)
 setUnion        (Set xs) (Set ys) = list2set (xs ++ ys)
-setDifference   (Set xs) (Set ys) = list2set (xs \\ ys)
+setDifference   (Set xs) (Set ys) = list2set ((xs \\ ys) ++ (ys \\ xs))
+-- > setIntersection (list2set [1..10]) (list2set [5..12])
 
 -- todo: tests
