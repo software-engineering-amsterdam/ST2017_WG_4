@@ -59,20 +59,25 @@ setDifference   (Set xs) (Set ys) = list2set (xs \\ ys)
 {--
 Testable properties
 setIntersection:
-  -
+  - Commutativity   = A (Intersect) B = B (Intersect) A                  (p.130)
 setUnion:
-  - Commutativity   = A (union) B = B (union) A
-  - Contains itself = A (union) B should contain every element from A
+  - Commutativity   = A (union) B = B (union) A                          (p.130)
+  - Contains itself = A (union) B should contain every element from A    (p.130)
 setDifference:
-  -
+  - Difference      = For every x in A x is not a element of B           (p.127)
  --}
 
+prop_intersectionCommutativity :: Set Int -> Set Int -> Bool
+prop_intersectionCommutativity x y = setIntersection x y == setIntersection y x
+
 prop_unionCommutativity :: Set Int -> Set Int -> Bool
-prop_unionCommutativity x y = unionSet x y == unionSet y x
+prop_unionCommutativity x y = setUnion x y == setUnion y x
 
 prop_unionContainSelf :: Set Int -> Set Int -> Bool
-prop_unionContainSelf (Set xs) (Set ys) = all (\x -> inSet x (unionSet (Set ys) (Set xs))) xs
+prop_unionContainSelf (Set xs) (Set ys) = all (\x -> inSet x (setUnion (Set ys) (Set xs))) xs
 
+-- prop_difference :: Set Int -> Set Int -> Bool
+-- prop_difference x y = all (\z -> inSet z x)
 
 ------------------------------
 -- Helper (to let scratch generator accept two generated sets)
@@ -93,6 +98,7 @@ testScratchGenerator testCounter f =
 
 test :: IO ()
 test =
- do testScratchGenerator 100 (prop_unionCommutativity)
+ do testScratchGenerator 100 (prop_intersectionCommutativity)
+    testScratchGenerator 100 (prop_unionCommutativity)
     testScratchGenerator 100 (prop_unionContainSelf)
     return ()
