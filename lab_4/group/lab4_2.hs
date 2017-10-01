@@ -17,7 +17,7 @@
 -- Test if it's a set (http://geekyplatypus.com/category/haskell/)
 
 --------------------------------------------------------------------------
-module Assignment1 where
+module Assignment2 where
 
 import Data.List
 import System.Random
@@ -26,20 +26,20 @@ import SetOrd
 import Control.Monad
 
 -- From scratch
-genSet :: Int -> Int -> Int -> IO (Set Int)
-genSet n mini maxi
-  | maxi - mini < n = error "Input out of bound"
-  | otherwise = do randomSet <- genList mini maxi n
-                   return (list2set randomSet)
+probs :: Int -> IO [Int]
+probs 0 = return []
+probs n = do
+ p <- getStdRandom (randomR (-50,50))
+ ps <- probs (n-1)
+ return (p:ps)
 
-genList :: Int -> Int -> Int -> IO ([Int])
-genList _ _ 0 = do return []
-genList maxi mini n = do random <- randomRIO (maxi, mini)
-                         listCounter <- genList mini maxi (n-1)
-                         if elem random listCounter
-                           then (genList mini maxi n)
-                           else return (random : listCounter)
--- > genList 10 0 5
+-- Creates random set of random length between 0 and 50 containing integers between -50 and 50
+genScratchSet :: IO (Set Int)
+genScratchSet = do
+ n <- getStdRandom (randomR (0,50))
+ lst <- probs n
+ let set = list2set lst
+ return set
 
 -- Using QuickCheck
 genQuickCheckSet :: Int -> Gen (Set Int)
@@ -62,17 +62,14 @@ convertIO x = do
   ioSet <- x
   return (prop_isSet ioSet)
 
-if' b t e = if b then t else e
-ifM = liftM3 if'
-
 -- Test both generators
 test :: IO ()
 test =
- do ifM (convertIO (genSet 100 0 1000))
-      (print "+++ OK, passed 1 custom scrath generator test.")
-      (print "Failed")
-    ifM (convertIO (genSet 10 0 10))
-      (print "+++ OK, passed 1 custom scrath generator test.")
-      (print "Failed")
+ do scratchTest1 <- convertIO (genScratchSet)
+    when (scratchTest1 == True) $ print "+++ OK, passed 1 custom scrath generator test."
+    when (scratchTest1 == False) $ print "Failed"
+    scratchTest2 <- convertIO (genScratchSet)
+    when (scratchTest2 == True) $ print "+++ OK, passed 1 custom scrath generator test."
+    when (scratchTest2 == False) $ print "Failed"
     quickCheck (forAll (sized genQuickCheckSet) prop_isSet)
     return ()

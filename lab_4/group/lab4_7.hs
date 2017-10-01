@@ -1,7 +1,6 @@
 -- Assignment: Lab4
 -- Exercise: 7
--- Authors: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi 
+-- Student:Elias el Khaldi
 -- Time needed: 90 minutes
 --------------------------------------------------------------------------
 
