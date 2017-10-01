@@ -2,11 +2,8 @@
 -- Exercise: 9
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi
--- Time needed: 30 minutes
+-- Time needed: 90 minutes
 --------------------------------------------------------------------------
-
--- "Seq [Ass \"x\" (I 0),Ass \"y\" (I 1),While (Gt (V \"n\") (I 0)) (Seq [Ass \"z\" (V \"x\"),Ass \"x\" (V \"y\"),Ass \"y\" (Add (V \"z\") (V \"y\")),Ass \"n\" (Subtr (V \"n\") (I 1))])]"
-
 
 module Assignment9 where
 
@@ -15,6 +12,8 @@ import System.Random
 import Test.QuickCheck
 import Lecture4
 
+-- Show functions
+-------------------------------------------------------------------------------
 instance Show Statement where
   show (Ass var expr)         = (show var) ++ " = " ++ (show expr)
   show (Cond condition s1 s2) = "If " ++ (show condition) ++ " {\n" ++ (show s1) ++ "\n} else {\n" ++ (show s2) ++ "\n}"
@@ -38,6 +37,7 @@ instance Show Expr where
   show (Subtr expr1 expr2)  = "(" ++ (show expr1) ++ " - " ++ (show expr2) ++ ")"
   show (Mult expr1 expr2)   = "(" ++ (show expr1) ++ " * " ++ (show expr2) ++ ")"
 
+-- Two test functions for the new 'show' functions.
 test1 :: IO ()
 test1 =  putStr (show fib)
 
@@ -45,4 +45,4 @@ test2 :: IO ()
 test2 =  putStr (show condition)
 
 condition :: Statement
-condition = Seq [Cond (Gt (I 1) (I 0)) (Ass "y" (I 1)) (Ass "x" (I 1))]
+condition = Seq [Cond (Dj [Gt (V "n") (I 0), Lt (V "n") (I 0)]) (Ass "y" (I 1)) (Ass "x" (I 1))]
