@@ -1,6 +1,7 @@
 -- Assignment: Lab3
 -- Exercise: 5
--- Student: Dylan Bartels
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time needed: 30 min
 
 -- Suppose we implement binary relations as list of pairs, Haskell type [(a,a)]. Assume the following definition:
@@ -36,3 +37,4 @@ symClos as = sortBy relComparer (as ++ (flipPairs as))
 
 testClos :: Rel Int
 testClos = [(1,2),(2,3),(3,4)]
+-- > symClos (testClos)
