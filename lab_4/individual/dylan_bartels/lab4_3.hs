@@ -19,10 +19,9 @@ import System.Random
 import Test.QuickCheck
 import SetOrd
 
-data Operation = Union (Set a) (Set a)
-               | Difference (Set a) (Set a)
-               deriving (Eq,Show)
+setIntersection, setUnion, setDifference :: (Ord a) => Set a -> Set a -> Set a
+setIntersection (Set xs) (Set ys) = Set (xs `intersect` ys)
+setUnion        (Set xs) (Set ys) = list2set (xs ++ ys)
+setDifference   (Set xs) (Set ys) = list2set (xs \\ ys)
 
-eval :: Operation -> Bool
-eval Union x y      = forAll
-eval Difference x y =
+-- todo: tests

@@ -18,6 +18,7 @@ import Data.List
 import System.Random
 import Test.QuickCheck
 import SetOrd
+import Control.Monad
 
 -- From scratch
 
@@ -52,11 +53,23 @@ isSet :: [Int] -> Bool
 isSet []     = True
 isSet (x:xs) = x `notElem` xs && isSet xs
 
--- Test both generators, todo:
+convertIO :: IO (Set Int) -> IO Bool
+convertIO x = do
+  ioSet <- x
+  return (prop_isSet ioSet)
+
+-- if/then/else for IO Bool https://mail.haskell.org/pipermail/haskell-cafe/2006-November/019752.html
+if' b t e = if b then t else e
+ifM = liftM3 if'
+
+-- Test both generators
 test :: IO ()
 test =
- do if (genSet 100 0 1000) == True
-      then print "+++ OK, passed 1 custom scrath generator test."
-      else
+ do ifM (convertIO (genSet 100 0 1000))
+      (print "+++ OK, passed 1 custom scrath generator test.")
+      (print "Failed")
+    ifM (convertIO (genSet 10 0 10))
+      (print "+++ OK, passed 1 custom scrath generator test.")
+      (print "Failed")
     quickCheck (forAll (sized genQuickCheckSet) prop_isSet)
     return ()
