@@ -8,7 +8,7 @@
 -- "Seq [Ass \"x\" (I 0),Ass \"y\" (I 1),While (Gt (V \"n\") (I 0)) (Seq [Ass \"z\" (V \"x\"),Ass \"x\" (V \"y\"),Ass \"y\" (Add (V \"z\") (V \"y\")),Ass \"n\" (Subtr (V \"n\") (I 1))])]"
 
 
-module Assignment9 where
+module Lab4_9 where
 
 import Data.List
 import System.Random

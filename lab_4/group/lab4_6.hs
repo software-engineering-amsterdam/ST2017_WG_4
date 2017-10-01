@@ -11,13 +11,13 @@
 -- (Deliverable: Haskell program, indication of time spent.)
 --------------------------------------------------------------------------
 
-module Assignment6 where
+module Lab4_6 where
     
 import Data.List
 import System.Random
 import Test.QuickCheck  
 import SetOrd
-import Assignment5
+import Lab4_5
 
 --
 infixr 5 @@
