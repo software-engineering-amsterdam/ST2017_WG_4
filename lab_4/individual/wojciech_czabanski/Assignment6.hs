@@ -11,27 +11,16 @@ import System.Random
 import Test.QuickCheck  
 import Assignment5
 
-getDomain :: Ord a => Rel a -> [a]
-getDomain as = map (\x -> fst x) as
+infixr 5 @@
 
-getRange :: Ord a => Rel a -> [a]
-getRange as = map (\x -> snd x) as
-
---closureTransform :: Ord a => Rel a -> Rel a 
---closureTransform as = zipWith trClosureJoin (getDomain as) (getRange as)
-
--- Plan: 
--- For every element 'a' of the domain
---  Create a pair with element 'b' from the range (codomain) iif 'a' < 'b'
--- Join lists
--- Remove duplicated
--- Order
+(@@) :: Eq a => Rel a -> Rel a -> Rel a
+r @@ s = nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
 
 trClos :: Ord a => Rel a -> Rel a 
-trClos a = sortBy relComparer a
+trClos a = sortBy relComparer (a ++ (a @@ a))
 
 testTrClos :: Rel Int
-testTrClos = [(1,2),(3,4),(2,3)]
+testTrClos = [(1,2),(2,3),(3,4)]
 
 -- expected: [(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)]
 

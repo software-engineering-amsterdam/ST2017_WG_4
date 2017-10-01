@@ -9,13 +9,12 @@ import Data.List (sort)
 
 newtype Set a = Set [a] deriving (Eq,Ord)
 
-instance (Show a) => Show (Set a) where
-showsPrec _ (Set s) str = showSet s str
+instance (Show a) => Show (Set a) where showsPrec _ (Set s) str = showSet s str
 
 showSet []     str = showString "{}" str
 showSet (x:xs) str = showChar '{' ( shows x ( showl xs str))
-where showl []     str = showChar '}' str
-showl (x:xs) str = showChar ',' (shows x (showl xs str))
+      where showl []     str = showChar '}' str
+            showl (x:xs) str = showChar ',' (shows x (showl xs str))
 
 emptySet  :: Set a       
 emptySet = Set []
@@ -55,8 +54,7 @@ list2set (x:xs) = insertSet x (list2set xs)
 -- list2set xs = Set (foldr insertList [] xs)
 
 powerSet :: Ord a => Set a -> Set (Set a)
-powerSet (Set xs) = 
-Set (sort (map (\xs -> (list2set xs)) (powerList xs)))
+powerSet (Set xs) = Set (sort (map (\xs -> (list2set xs)) (powerList xs)))
 
 powerList  :: [a] -> [[a]]
 powerList  [] = [[]]
@@ -73,5 +71,4 @@ infixl 9 !!!
 
 unionSet :: (Ord a) => Set a -> Set a -> Set a 
 unionSet (Set [])     set2  =  set2
-unionSet (Set (x:xs)) set2  = 
-insertSet x (unionSet (Set xs) set2)
+unionSet (Set (x:xs)) set2  = insertSet x (unionSet (Set xs) set2)
