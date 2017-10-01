@@ -1,15 +1,9 @@
 -- Assignment: Lab4
 -- Exercise: 10
--- Student: Wojciech Czabanski
--- Time needed: 40 minutes
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time needed: 40 min
 --------------------------------------------------------------------------
-
-module Assignment10 where
-    
-import Data.List
-import System.Random
-import Test.QuickCheck  
-   
 -- Euler 55
 -- If we take 47, reverse and add, 47 + 74 = 121, which is palindromic.
 
@@ -30,6 +24,11 @@ import Test.QuickCheck
 -- Surprisingly, there are palindromic numbers that are themselves Lychrel numbers; the first example is 4994.
 -- How many Lychrel numbers are there below ten-thousand?
 
+module Lab4 where
+import Data.List
+import System.Random
+import Test.QuickCheck  
+   
 isLychrel' :: Integer -> Int -> Bool
 isLychrel' n i | i > 50 = True
                | i > 0 && (show n == reverse (show n)) = False
@@ -42,7 +41,7 @@ isLychrel n = isLychrel' n 0
 lychrelCount :: Int
 lychrelCount = length (filter isLychrel [10..10000])
 
--- Testing
+-- Manual testing
 -- A well known example of a number that cannot be proven to be non-lychrel as per www.p196.org
 testLychrelTrue :: Bool
 testLychrelTrue = isLychrel 196
