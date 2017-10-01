@@ -2,7 +2,7 @@
 -- Exercise: 3
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
--- Time needed: 45 minutes
+-- Time needed: 180 minutes
 --------------------------------------------------------------------------
 -- Implement operations for set intersection, set union and set difference,
 -- for the datatype Set defined in SetOrd.hs. Next, use automated testing to
@@ -76,8 +76,9 @@ prop_unionCommutativity x y = setUnion x y == setUnion y x
 prop_unionContainSelf :: Set Int -> Set Int -> Bool
 prop_unionContainSelf (Set xs) (Set ys) = all (\x -> inSet x (setUnion (Set ys) (Set xs))) xs
 
--- prop_difference :: Set Int -> Set Int -> Bool
--- prop_difference x y = all (\z -> inSet z x)
+prop_difference :: Set Int -> Set Int -> Bool
+prop_difference (Set xs) (Set ys) = all (\x -> inSet x (Set xs) && not (inSet x (Set ys)))
+                                    (set2List (setDifference (Set xs) (Set ys)))
 
 ------------------------------
 -- Helper (to let scratch generator accept two generated sets)
@@ -92,13 +93,20 @@ testScratchGenerator testCounter f =
     if (f set1 set2) then testScratchGenerator (testCounter-1) f
     else error ("Failed test")
 
+set2List :: Set Int -> [Int]
+set2List (Set xs) = xs
+
 ------------------------------
 -- Main automated test
+-- Note: Don't know how to make QuickCheck work with two generators, forAll only accepts 1? time constrains.
 ------------------------------
 
 test :: IO ()
 test =
- do testScratchGenerator 100 (prop_intersectionCommutativity)
+ do putStrLn $ id ("Running test for generator constructed from scratch.")
+    testScratchGenerator 100 (prop_intersectionCommutativity)
     testScratchGenerator 100 (prop_unionCommutativity)
     testScratchGenerator 100 (prop_unionContainSelf)
+    testScratchGenerator 100 (prop_difference)
+    putStrLn $ id ("Running test for QuickCheck generator.")
     return ()
