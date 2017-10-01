@@ -27,8 +27,8 @@
 module Lab4 where
 import Data.List
 import System.Random
-import Test.QuickCheck  
-   
+import Test.QuickCheck
+
 isLychrel' :: Integer -> Int -> Bool
 isLychrel' n i | i > 50 = True
                | i > 0 && (show n == reverse (show n)) = False
