@@ -1,7 +1,6 @@
 -- Assignment: Lab3
 -- Exercise: 4
--- Student: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Student: Dylan Bartels
 -- Time needed: 1.5
 --------------------------------------------------------------------------
 
