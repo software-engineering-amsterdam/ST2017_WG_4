@@ -19,10 +19,26 @@ import System.Random
 import Test.QuickCheck
 import SetOrd
 
-data Operation = Union (Set a) (Set a)
-               | Difference (Set a) (Set a)
-               deriving (Eq,Show)
+setIntersection, setUnion, setDifference :: (Ord a) => Set a -> Set a -> Set a
+setIntersection (Set xs) (Set ys) = Set (xs `intersect` ys)
+setUnion        (Set xs) (Set ys) = list2set (xs ++ ys)
+setDifference   (Set xs) (Set ys) = list2set ((xs \\ ys) ++ (ys \\ xs))
+-- > setIntersection (list2set [1..10]) (list2set [5..12])
 
-eval :: Operation -> Bool
-eval Union x y      = forAll
-eval Difference x y =
+-- Testable properties
+-- setIntersection :
+-- setUnion:         all inSet of both input
+-- setDifference:    
+
+
+-- Main test
+-- test :: IO ()
+-- test =
+--  do ifM (convertIO (genSet 100 0 1000))
+--       (print "+++ OK, passed 1 custom scrath generator test.")
+--       (print "Failed")
+--     ifM (convertIO (genSet 10 0 10))
+--       (print "+++ OK, passed 1 custom scrath generator test.")
+--       (print "Failed")
+--     quickCheck (forAll (sized genQuickCheckSet) prop_isSet)
+--     return ()
