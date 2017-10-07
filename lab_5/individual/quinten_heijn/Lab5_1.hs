@@ -26,8 +26,8 @@
 -- +---------+---------+---------+
 --------------------------------------------------------------------------------
 module Lab5_1 where
-import Data.List
-import System.Random
+  import Data.List
+  import System.Random
 
 type Row    = Int
 type Column = Int
