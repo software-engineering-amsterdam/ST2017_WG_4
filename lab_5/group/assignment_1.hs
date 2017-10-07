@@ -1,6 +1,8 @@
 {--
 Time spent:
 Dylan:      3h
+Quinten:    2h
+Wojchiech:  1.5h
 --}
 module Lab5 where
 
