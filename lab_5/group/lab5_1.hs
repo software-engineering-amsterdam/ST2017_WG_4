@@ -1,4 +1,4 @@
--- Assignment: Lab4
+-- Assignment: Lab5
 -- Exercise: 1
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach

@@ -1,8 +1,8 @@
--- Assignment: Lab4
+-- Assignment: Lab5
 -- Exercise: 2
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
--- Time spent: 95 min
+-- Time spent: 125 min
 --------------------------------------------------------------------------
 module Lab5_2 where
   
@@ -10,6 +10,7 @@ import Data.List
 import System.Random
 import Lecture5 hiding (freeAtPos, consistent, prune, succNode, solveAndShow, solveShowNs,
                         extendNode, solveNs)
+import qualified Lab5_1
 
 type Position = (Row,Column)
 type Constrnt = [[Position]]
@@ -121,6 +122,23 @@ nrcGrid =  [[0,0,0,3,0,0,0,0,0],
 --------------------------------------------------------------------------
 -- Test report
 --------------------------------------------------------------------------
--- TODO:
--- 
+-- As a test I will be comparing solutions computed by the refactored version
+-- and the basic one, from exercise 1.
+--------------------------------------------------------------------------
+
+-- A helper function to extract a grid from a node
+node2grid :: Node -> Grid
+node2grid n = sud2grid (fst n)
+
+-- The solving funtion for the basic solver (Assignment 1)
+solveBasic :: Grid -> [Grid]
+solveBasic g = map (\x -> node2grid x) (Lab5_1.solveNs (initNode g))
+
+-- The solving function for the refactored solver (Assignment 2)
+solveRefactored :: Grid -> [Grid]
+solveRefactored g = map (\x -> node2grid x) (solveNs (initNode g))
+
+-- The test property which compares the output of both solvers.
+testSolvers :: Grid -> Bool
+testSolvers g = (solveBasic g) == (solveRefactored g)
 --------------------------------------------------------------------------
