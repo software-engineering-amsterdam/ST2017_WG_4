@@ -1,22 +1,45 @@
+{--
+Time spent:
+Dylan:      1h
+--}
 module Lab5 where
 
 import Data.List
 import System.Random
-import Lecture5 hiding (consistent, main, freeAtPos, sameblock, extendNode,
-                        prune, succNode, solveShowNs, solveNs, solveAndShow,
-                        genProblem, filledPositions, minimalize, eraseN,
-                        eraseS, uniqueSol, genRandomSudoku, rsolveNs, rsearch,
-                        randomize, emptyN, rsuccNode, getRandomCnstr, sameLen,
-                        getRandomItem, getRandomInt, constraints)
+import Lecture5 hiding (main, freeAtPos, constraints, sameblock, extendNode,
+                        initNode, prune, emptyN, eraseN, rsuccNode, rsearch,
+                        rsolveNs, genRandomSudoku, genProblem)
 
 main :: IO ()
-main = do
-  putStrLn $ id ("Generating random solved NRC sudoku")
-  y <- genRandomSudoku
-  showNode y
-  putStrLn $ id ("Generating problem NRC sudoku out of solution")
-  s <- genProblem y
-  showNode s
+main = do y <- genRandomSudoku
+          showNode y
+          s  <- genProblem y
+          showNode s
+
+-- Code from assignment 2
+
+type Position = (Row,Column)
+type Constrnt = [[Position]]
+
+rowConstrnt      = [[(r,c)| c <- values ] | r <- values ]
+columnConstrnt   = [[(r,c)| r <- values ] | c <- values ]
+blockConstrnt    = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
+nrcBlockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks]
+
+combinedConstrnt = rowConstrnt ++ columnConstrnt ++ blockConstrnt ++ nrcBlockConstrnt
+
+freeAtPos :: Sudoku -> Position -> Constrnt -> [Value]
+freeAtPos s (r,c) xs = let
+   ys = filter (elem (r,c)) xs
+ in
+   foldl1 intersect (map ((values \\) . map s) ys)
+
+constraints :: Sudoku -> [Constraint]
+constraints s = sortBy length3rd
+    [(r,c, freeAtPos s (r,c) combinedConstrnt) |
+                       (r,c) <- openPositions s ]
+
+-- Code from assignment 1
 
 nrcBlocks :: [[Int]]
 nrcBlocks = [[2..4],[6..8]]
@@ -24,36 +47,13 @@ nrcBlocks = [[2..4],[6..8]]
 nrcBl :: Int -> [Int]
 nrcBl x = concat $ filter (elem x) nrcBlocks
 
-nrcSubGrid :: Sudoku -> (Row,Column) -> [Value]
-nrcSubGrid s (r,c) = [ s (r',c') | r' <- nrcBl r, c' <- nrcBl c]
-
-freeInNrcSubGrid :: Sudoku -> (Row,Column) -> [Value]
-freeInNrcSubGrid s (r,c) = freeInSeq (freeInNrcSubGrid s (r,c))
-
-freeAtPos :: Sudoku -> (Row,Column) -> [Value]
-freeAtPos s (r,c) =
-  (freeInRow s r)
-   `intersect` (freeInColumn s c)
-   `intersect` (freeInSubgrid s (r,c))
-   `intersect` (freeInNrcSubGrid s (r,c))
-
-nrcGridInjective :: Sudoku -> (Row,Column) -> Bool
-nrcGridInjective s (r,c) = injective vs where
-  vs = filter (/= 0) (nrcSubGrid s (r,c))
-
-consistent :: Sudoku -> Bool
-consistent s = and $
-               [ rowInjective s r |  r <- positions ]
-                ++
-               [ colInjective s c |  c <- positions ]
-                ++
-               [ subgridInjective s (r,c) | r <- [1,4,7], c <- [1,4,7]]
-                ++
-               [ nrcGridInjective s (r,c) | r <- [2,6], c <- [2,6]]
-
 sameblock :: (Row,Column) -> (Row,Column) -> Bool
 sameblock (r,c) (x,y) = (bl r == bl x && bl c == bl y) ||
                         (nrcBl r == nrcBl x && nrcBl c == nrcBl y)
+{--
+Code from Lecture 5 not changed but can't be imported and still use the changed
+freeAtPos, constraints & sameblock (How do you use them from Lecture5?)
+--}
 
 extendNode :: Node -> Constraint -> [Node]
 extendNode (s,constraints) (r,c,vs) =
@@ -64,56 +64,18 @@ extendNode (s,constraints) (r,c,vs) =
 prune :: (Row,Column,Value) -> [Constraint] -> [Constraint]
 prune _ [] = []
 prune (r,c,v) ((x,y,zs):rest)
-  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | sameblock (r,c) (x,y) = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | otherwise = (x,y,zs) : prune (r,c,v) rest
+ | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
+ | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
+ | sameblock (r,c) (x,y) = (x,y,zs\\[v]) : prune (r,c,v) rest
+ | otherwise = (x,y,zs) : prune (r,c,v) rest
 
-succNode :: Node -> [Node]
-succNode (s,[]) = []
-succNode (s,p:ps) = extendNode (s,ps) p
-
-constraints :: Sudoku -> [Constraint]
-constraints s = sortBy length3rd
-    [(r,c, freeAtPos s (r,c)) |
-                       (r,c) <- openPositions s ]
--- > constraints (grid2sud example1)
-
-solveNs :: [Node] -> [Node]
-solveNs = search succNode solved
-
-solveAndShow :: Grid -> IO[()]
-solveAndShow gr = solveShowNs (initNode gr)
-
-solveShowNs :: [Node] -> IO[()]
-solveShowNs = sequence . fmap showNode . solveNs
+initNode :: Grid -> [Node]
+initNode gr = let s = grid2sud gr in
+             if (not . consistent) s then []
+             else [(s, constraints s)]
 
 emptyN :: Node
 emptyN = (\ _ -> 0,constraints (\ _ -> 0))
-
-getRandomInt :: Int -> IO Int
-getRandomInt n = getStdRandom (randomR (0,n))
-
-getRandomItem :: [a] -> IO [a]
-getRandomItem [] = return []
-getRandomItem xs = do n <- getRandomInt maxi
-                      return [xs !! n]
-                   where maxi = length xs - 1
-
-randomize :: Eq a => [a] -> IO [a]
-randomize xs = do y <- getRandomItem xs
-                  if null y
-                    then return []
-                    else do ys <- randomize (xs\\y)
-                            return (head y:ys)
-
-sameLen :: Constraint -> Constraint -> Bool
-sameLen (_,_,xs) (_,_,ys) = length xs == length ys
-
-getRandomCnstr :: [Constraint] -> IO [Constraint]
-getRandomCnstr cs = getRandomItem (f cs)
-  where f [] = []
-        f (x:xs) = takeWhile (sameLen x) (x:xs)
 
 rsuccNode :: Node -> IO [Node]
 rsuccNode (s,cs) = do xs <- getRandomCnstr cs
@@ -124,6 +86,10 @@ rsuccNode (s,cs) = do xs <- getRandomCnstr cs
 
 rsolveNs :: [Node] -> IO [Node]
 rsolveNs ns = rsearch rsuccNode solved (return ns)
+
+genRandomSudoku :: IO Node
+genRandomSudoku = do [r] <- rsolveNs [emptyN]
+                     return r
 
 rsearch :: (node -> IO [node]) -> (node -> Bool) -> IO [node] -> IO [node]
 rsearch succ goal ionodes =
@@ -141,35 +107,9 @@ rsearch succ goal ionodes =
                              rsearch
                                succ goal (return $ tail xs)
 
-genRandomSudoku :: IO Node
-genRandomSudoku = do [r] <- rsolveNs [emptyN]
-                     return r
-
-randomS = genRandomSudoku >>= showNode
-
-uniqueSol :: Node -> Bool
-uniqueSol node = singleton (solveNs [node]) where
-  singleton [] = False
-  singleton [x] = True
-  singleton (x:y:zs) = False
-
-eraseS :: Sudoku -> (Row,Column) -> Sudoku
-eraseS s (r,c) (x,y) | (r,c) == (x,y) = 0
-                     | otherwise      = s (x,y)
-
 eraseN :: Node -> (Row,Column) -> Node
 eraseN n (r,c) = (s, constraints s)
   where s = eraseS (fst n) (r,c)
-
-minimalize :: Node -> [(Row,Column)] -> Node
-minimalize n [] = n
-minimalize n ((r,c):rcs) | uniqueSol n' = minimalize n' rcs
-                         | otherwise    = minimalize n  rcs
-  where n' = eraseN n (r,c)
-
-filledPositions :: Sudoku -> [(Row,Column)]
-filledPositions s = [ (r,c) | r <- positions,
-                              c <- positions, s (r,c) /= 0 ]
 
 genProblem :: Node -> IO Node
 genProblem n = do ys <- randomize xs

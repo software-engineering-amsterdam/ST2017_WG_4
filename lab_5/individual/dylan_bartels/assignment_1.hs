@@ -71,8 +71,7 @@ extendNode (s,constraints) (r,c,vs) =
      sortBy length3rd $
          prune (r,c,v) constraints) | v <- vs ]
 
-prune :: (Row,Column,Value)
-      -> [Constraint] -> [Constraint]
+prune :: (Row,Column,Value) -> [Constraint] -> [Constraint]
 prune _ [] = []
 prune (r,c,v) ((x,y,zs):rest)
   | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
