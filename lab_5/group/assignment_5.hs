@@ -4,7 +4,7 @@
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent: 60 min
 --------------------------------------------------------------------------
-module Assignment5 where
+module Assignment_5 where
 
 import Data.List
 import System.Random
