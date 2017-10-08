@@ -1,8 +1,10 @@
-{--
-Time spent:
-Dylan:      1h
---}
-module Lab5 where
+-- Assignment: Lab5
+-- Exercise: 5
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time spent: 60 min
+--------------------------------------------------------------------------
+module Assignment_5 where
 
 import Data.List
 import System.Random
