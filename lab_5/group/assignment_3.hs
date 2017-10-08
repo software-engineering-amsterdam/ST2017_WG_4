@@ -20,6 +20,17 @@ main = do
   putStrLn (if (minimal example6) then "True" else "False")
   return ()
 
+example6 :: Grid
+example6 = [[0,0,0,0,0,0,0,1,0],
+            [0,0,0,0,0,2,0,0,3],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,0,0,0,5,0,0],
+            [4,0,1,6,0,0,0,0,0],
+            [0,0,7,1,0,0,0,0,0],
+            [0,5,0,0,0,0,2,0,0],
+            [0,0,0,0,8,0,0,4,0],
+            [0,3,0,9,1,0,0,0,0]]
+
 unique :: Grid -> Bool
 unique grid = (length $ solveNotShow grid) == 1
 
