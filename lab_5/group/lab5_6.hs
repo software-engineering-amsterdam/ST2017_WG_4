@@ -5,7 +5,7 @@
 -- Time needed: 90 minutes
 --------------------------------------------------------------------------
 
-module Lab5_6 where
+module Assignment6 where
  
 import Data.List
 import System.Random

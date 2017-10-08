@@ -8,7 +8,7 @@
 -- Wojciech: 1.5h
 -- Total:    6.5h
 --------------------------------------------------------------------------
-module Lab5_1 where
+module Assignment_1 where
 
 import Data.List
 import System.Random

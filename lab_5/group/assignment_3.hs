@@ -7,7 +7,7 @@ total:      3.5h
 The minimal sudoku is example6, calculation takes a long time
 
 --}
-module Lab5 where
+module Assignment_3 where
 
 import Data.List
 import System.Random
