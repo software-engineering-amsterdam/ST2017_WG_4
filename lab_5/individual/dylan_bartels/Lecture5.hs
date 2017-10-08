@@ -168,6 +168,7 @@ constraints :: Sudoku -> [Constraint]
 constraints s = sortBy length3rd
     [(r,c, freeAtPos s (r,c)) |
                        (r,c) <- openPositions s ]
+-- > constraints (grid2sud example1)
 
 data Tree a = T a [Tree a] deriving (Eq,Ord,Show)
 
