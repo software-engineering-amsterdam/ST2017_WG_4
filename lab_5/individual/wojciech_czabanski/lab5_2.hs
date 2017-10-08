@@ -1,8 +1,13 @@
+-- Assignment: Lab5
+-- Exercise: 2
+-- Student: Wojciech Czabanski
+-- Time needed:  minutes
+--------------------------------------------------------------------------
+
 module Lab5_2 where
  
 import Data.List
 import System.Random
-import Lecture5
 
 type Row    = Int 
 type Column = Int 
@@ -377,3 +382,4 @@ freeAtPos' s (r,c) xs = let
 -- whereas the algorithm remains the same, as opposed to changing the algorithm (`consistent` function)
 -- in the former case
 
+-- use haskell profiler prof for memory & cpu time
