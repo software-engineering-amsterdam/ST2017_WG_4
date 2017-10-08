@@ -1,7 +1,7 @@
 -- Assignment: Lab5
 -- Exercise: 1
 -- Student: Wojciech Czabanski
--- Time needed: 30 minutes
+-- Time needed: 90 minutes
 --------------------------------------------------------------------------
 
 module Lab5_1
