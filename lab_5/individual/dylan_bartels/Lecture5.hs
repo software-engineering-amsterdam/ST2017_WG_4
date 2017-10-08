@@ -89,6 +89,7 @@ freeAtPos s (r,c) =
   (freeInRow s r)
    `intersect` (freeInColumn s c)
    `intersect` (freeInSubgrid s (r,c))
+-- > freeAtPos (grid2sud nrcSudoku) (2,1)
 
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
@@ -104,6 +105,7 @@ colInjective s c = injective vs where
 subgridInjective :: Sudoku -> (Row,Column) -> Bool
 subgridInjective s (r,c) = injective vs where
    vs = filter (/= 0) (subGrid s (r,c))
+-- > subgridInjective (grid2sud example1) (1,1)
 
 consistent :: Sudoku -> Bool
 consistent s = and $
@@ -111,8 +113,8 @@ consistent s = and $
                 ++
                [ colInjective s c |  c <- positions ]
                 ++
-               [ subgridInjective s (r,c) |
-                    r <- [1,4,7], c <- [1,4,7]]
+               [ subgridInjective s (r,c) | r <- [1,4,7], c <- [1,4,7]]
+-- > consistent (grid2sud example3)
 
 extend :: Sudoku -> ((Row,Column),Value) -> Sudoku
 extend = update
@@ -348,7 +350,7 @@ genProblem n = do ys <- randomize xs
    where xs = filledPositions (fst n)
 
 main :: IO ()
-main = do [r] <- rsolveNs [emptyN]
-          showNode r
-          s  <- genProblem r
+main = do y <- genRandomSudoku
+          showNode y
+          s  <- genProblem y
           showNode s

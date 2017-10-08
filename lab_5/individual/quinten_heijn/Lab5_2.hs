@@ -1,14 +1,18 @@
+-- Assignment: Lab5
+-- Exercise: 2
+-- Student: Quinten Heijn
+-- Time needed: ??
+--------------------------------------------------------------------------------
 
-module Lecture5
-
-where
-
+module Lab5_2 where
 import Data.List
 import System.Random
 
 type Row    = Int
 type Column = Int
 type Value  = Int
+type Position = (Row,Column)
+type Constrnt = [[Position]]
 type Grid   = [[Value]]
 
 positions, values :: [Int]
