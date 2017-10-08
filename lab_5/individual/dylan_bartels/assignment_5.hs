@@ -7,7 +7,7 @@ import Lecture5 hiding (consistent, main, freeAtPos, sameblock, extendNode,
                         genProblem, filledPositions, minimalize, eraseN,
                         eraseS, uniqueSol, genRandomSudoku, rsolveNs, rsearch,
                         randomize, emptyN, rsuccNode, getRandomCnstr, sameLen,
-                        getRandomItem, getRandomInt)
+                        getRandomItem, getRandomInt, constraints)
 
 main :: IO ()
 main = do
@@ -61,8 +61,7 @@ extendNode (s,constraints) (r,c,vs) =
      sortBy length3rd $
          prune (r,c,v) constraints) | v <- vs ]
 
-prune :: (Row,Column,Value)
-      -> [Constraint] -> [Constraint]
+prune :: (Row,Column,Value) -> [Constraint] -> [Constraint]
 prune _ [] = []
 prune (r,c,v) ((x,y,zs):rest)
   | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
@@ -73,6 +72,12 @@ prune (r,c,v) ((x,y,zs):rest)
 succNode :: Node -> [Node]
 succNode (s,[]) = []
 succNode (s,p:ps) = extendNode (s,ps) p
+
+constraints :: Sudoku -> [Constraint]
+constraints s = sortBy length3rd
+    [(r,c, freeAtPos s (r,c)) |
+                       (r,c) <- openPositions s ]
+-- > constraints (grid2sud example1)
 
 solveNs :: [Node] -> [Node]
 solveNs = search succNode solved
@@ -120,8 +125,7 @@ rsuccNode (s,cs) = do xs <- getRandomCnstr cs
 rsolveNs :: [Node] -> IO [Node]
 rsolveNs ns = rsearch rsuccNode solved (return ns)
 
-rsearch :: (node -> IO [node])
-            -> (node -> Bool) -> IO [node] -> IO [node]
+rsearch :: (node -> IO [node]) -> (node -> Bool) -> IO [node] -> IO [node]
 rsearch succ goal ionodes =
   do xs <- ionodes
      if null xs
