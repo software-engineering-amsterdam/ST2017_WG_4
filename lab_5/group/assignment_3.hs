@@ -1,6 +1,11 @@
 {--
 Time spent:
-Dylan:      30min
+Quinten:    3h
+Dylan:      0.5h
+total:      3.5h
+
+The minimal sudoku is example6, calculation takes a long time
+
 --}
 module Lab5 where
 
@@ -11,8 +16,6 @@ import Lecture5 hiding (main)
 
 main :: IO ()
 main = do
-  putStrLn $ id ("Checking if example 5 is minimal")
-  putStrLn (if (minimal example5) then "True" else "False")
   putStrLn $ id ("Checking if example 6 is minimal")
   putStrLn (if (minimal example6) then "True" else "False")
   return ()
