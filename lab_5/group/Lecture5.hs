@@ -1,12 +1,10 @@
--- Assignment: Lab5
--- Exercise: 4
--- Student: Quinten Heijn
--- Time needed: ??
---------------------------------------------------------------------------------
 
-module Lab5_4 where
-  import Data.List
-  import System.Random
+module Lecture5
+
+where
+
+import Data.List
+import System.Random
 
 type Row    = Int
 type Column = Int
@@ -20,70 +18,35 @@ values    = [1..9]
 blocks :: [[Int]]
 blocks = [[1..3],[4..6],[7..9]]
 
--- NEW : Added
-blocksNRC :: [[Int]]
-blocksNRC = [[2..4],[6..8]]
-
 showVal :: Value -> String
 showVal 0 = " "
 showVal d = show d
 
--- NEW : Changed
-showRow1 :: [Value] -> IO()
-showRow1 [a1,a2,a3,a4,a5,a6,a7,a8,a9] =
- do  putChar '|'         ; putChar ' '
-     putStr (showVal a1) ; putChar ' '; putChar ' ';
-     putStr (showVal a2) ; putChar ' '; putChar ' ';
-     putStr (showVal a3) ; putChar ' '
-     putChar '|'         ; putChar ' '
-     putStr (showVal a4) ; putChar ' '; putChar ' '
-     putStr (showVal a5) ; putChar ' '; putChar ' '
-     putStr (showVal a6) ; putChar ' '
-     putChar '|'         ; putChar ' '
-     putStr (showVal a7) ; putChar ' '; putChar ' '
-     putStr (showVal a8) ; putChar ' '; putChar ' '
-     putStr (showVal a9) ; putChar ' '
-     putChar '|'         ; putChar '\n'
-
--- NEW : Added
-showRow2 :: [Value] -> IO()
-showRow2 [a1,a2,a3,a4,a5,a6,a7,a8,a9] =
+showRow :: [Value] -> IO()
+showRow [a1,a2,a3,a4,a5,a6,a7,a8,a9] =
  do  putChar '|'         ; putChar ' '
      putStr (showVal a1) ; putChar ' '
-     putChar '|'
-     putStr (showVal a2) ; putChar ' '; putChar ' '
+     putStr (showVal a2) ; putChar ' '
      putStr (showVal a3) ; putChar ' '
      putChar '|'         ; putChar ' '
-     putStr (showVal a4)
-     putChar '|'         ; putChar ' '
+     putStr (showVal a4) ; putChar ' '
      putStr (showVal a5) ; putChar ' '
-     putChar '|'
      putStr (showVal a6) ; putChar ' '
      putChar '|'         ; putChar ' '
-     putStr (showVal a7) ; putChar ' '; putChar ' '
-     putStr (showVal a8)
-     putChar '|'         ; putChar ' '
+     putStr (showVal a7) ; putChar ' '
+     putStr (showVal a8) ; putChar ' '
      putStr (showVal a9) ; putChar ' '
      putChar '|'         ; putChar '\n'
 
--- NEW : Changed
-showGridNRC :: Grid -> IO()
-showGridNRC [as,bs,cs,ds,es,fs,gs,hs,is] =
-  do putStrLn ("+---------+---------+---------+")
-     showRow1 as;
-     putStrLn ("|   +-----|--+   +--|-----+   |")
-     showRow2 bs; showRow2 cs
-     putStrLn ("+---------+---------+---------+")
-     showRow2 ds
-     putStrLn ("|   +-----|--+   +--|-----+   |")
-     showRow1 es
-     putStrLn ("|   +-----|--+   +--|-----+   |")
-     showRow2 fs
-     putStrLn ("+---------+---------+---------+")
-     showRow2 gs; showRow2 hs
-     putStrLn ("|   +-----|--+   +--|-----+   |")
-     showRow1 is
-     putStrLn ("+---------+---------+---------+")
+showGrid :: Grid -> IO()
+showGrid [as,bs,cs,ds,es,fs,gs,hs,is] =
+ do putStrLn ("+-------+-------+-------+")
+    showRow as; showRow bs; showRow cs
+    putStrLn ("+-------+-------+-------+")
+    showRow ds; showRow es; showRow fs
+    putStrLn ("+-------+-------+-------+")
+    showRow gs; showRow hs; showRow is
+    putStrLn ("+-------+-------+-------+")
 
 type Sudoku = (Row,Column) -> Value
 
@@ -98,23 +61,14 @@ grid2sud gr = \ (r,c) -> pos gr (r,c)
   pos gr (r,c) = (gr !! (r-1)) !! (c-1)
 
 showSudoku :: Sudoku -> IO()
-showSudoku = showGridNRC . sud2grid
+showSudoku = showGrid . sud2grid
 
 bl :: Int -> [Int]
 bl x = concat $ filter (elem x) blocks
 
--- NEW : Added
-blNRC :: Int -> [Int]
-blNRC x = concat $ filter (elem x) blocksNRC
-
 subGrid :: Sudoku -> (Row,Column) -> [Value]
 subGrid s (r,c) =
   [ s (r',c') | r' <- bl r, c' <- bl c ]
-
--- NEW : Added
-subGridNRC :: Sudoku -> (Row,Column) -> [Value]
-subGridNRC s (r,c) =
-  [ s (r',c') | r' <- blNRC r, c' <- blNRC c ]
 
 freeInSeq :: [Value] -> [Value]
 freeInSeq seq = values \\ seq
@@ -130,16 +84,11 @@ freeInColumn s c =
 freeInSubgrid :: Sudoku -> (Row,Column) -> [Value]
 freeInSubgrid s (r,c) = freeInSeq (subGrid s (r,c))
 
--- NEW : Added
-freeInSubgridNRC :: Sudoku -> (Row,Column) -> [Value]
-freeInSubgridNRC s (r,c) = freeInSeq (subGridNRC s (r,c))
-
 freeAtPos :: Sudoku -> (Row,Column) -> [Value]
 freeAtPos s (r,c) =
   (freeInRow s r)
    `intersect` (freeInColumn s c)
    `intersect` (freeInSubgrid s (r,c))
-   `intersect` (freeInSubgridNRC s (r,c))
 
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
@@ -156,23 +105,14 @@ subgridInjective :: Sudoku -> (Row,Column) -> Bool
 subgridInjective s (r,c) = injective vs where
    vs = filter (/= 0) (subGrid s (r,c))
 
--- NEW : Added
-subgridInjectiveNRC :: Sudoku -> (Row,Column) -> Bool
-subgridInjectiveNRC s (r,c) = injective vs where
-  vs = filter (/= 0) (subGridNRC s (r,c))
-
--- NEW : Changed
-consistentNRC :: Sudoku -> Bool
-consistentNRC s = and $
+consistent :: Sudoku -> Bool
+consistent s = and $
                [ rowInjective s r |  r <- positions ]
                 ++
                [ colInjective s c |  c <- positions ]
                 ++
                [ subgridInjective s (r,c) |
                     r <- [1,4,7], c <- [1,4,7]]
-                ++
-               [ subgridInjectiveNRC s (r,c) |
-                    r <- [2,6], c <- [2,6]]
 
 extend :: Sudoku -> ((Row,Column),Value) -> Sudoku
 extend = update
@@ -206,14 +146,12 @@ prune (r,c,v) ((x,y,zs):rest)
         (x,y,zs\\[v]) : prune (r,c,v) rest
   | otherwise = (x,y,zs) : prune (r,c,v) rest
 
--- NEW : Changed
 sameblock :: (Row,Column) -> (Row,Column) -> Bool
-sameblock (r,c) (x,y) = (bl r == bl x && bl c == bl y) || (blNRC r == blNRC x && blNRC c == blNRC y)
+sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
--- NEW : Changed
 initNode :: Grid -> [Node]
 initNode gr = let s = grid2sud gr in
-              if (not . consistentNRC) s then []
+              if (not . consistent) s then []
               else [(s, constraints s)]
 
 openPositions :: Sudoku -> [(Row,Column)]
@@ -265,20 +203,60 @@ solveAndShow gr = solveShowNs (initNode gr)
 solveShowNs :: [Node] -> IO[()]
 solveShowNs = sequence . fmap showNode . solveNs
 
--- NEW : Changed
--- The NRC sudoku from the exercise.
 example1 :: Grid
-example1 = [[0,0,0,3,0,0,0,0,0],
-            [0,0,0,7,0,0,3,0,0],
-            [2,0,0,0,0,0,0,0,8],
-            [0,0,6,0,0,5,0,0,0],
-            [0,9,1,6,0,0,0,0,0],
-            [3,0,0,0,7,1,2,0,0],
-            [0,0,0,0,0,0,0,3,1],
-            [0,8,0,0,4,0,0,0,0],
-            [0,0,2,0,0,0,0,0,0]]
+example1 = [[5,3,0,0,7,0,0,0,0],
+            [6,0,0,1,9,5,0,0,0],
+            [0,9,8,0,0,0,0,6,0],
+            [8,0,0,0,6,0,0,0,3],
+            [4,0,0,8,0,3,0,0,1],
+            [7,0,0,0,2,0,0,0,6],
+            [0,6,0,0,0,0,2,8,0],
+            [0,0,0,4,1,9,0,0,5],
+            [0,0,0,0,8,0,0,7,9]]
 
--------------------------------------------------------------------------------
+example2 :: Grid
+example2 = [[0,3,0,0,7,0,0,0,0],
+            [6,0,0,1,9,5,0,0,0],
+            [0,9,8,0,0,0,0,6,0],
+            [8,0,0,0,6,0,0,0,3],
+            [4,0,0,8,0,3,0,0,1],
+            [7,0,0,0,2,0,0,0,6],
+            [0,6,0,0,0,0,2,8,0],
+            [0,0,0,4,1,9,0,0,5],
+            [0,0,0,0,8,0,0,7,9]]
+
+example3 :: Grid
+example3 = [[1,0,0,0,3,0,5,0,4],
+            [0,0,0,0,0,0,0,0,3],
+            [0,0,2,0,0,5,0,9,8],
+            [0,0,9,0,0,0,0,3,0],
+            [2,0,0,0,0,0,0,0,7],
+            [8,0,3,0,9,1,0,6,0],
+            [0,5,1,4,7,0,0,0,0],
+            [0,0,0,3,0,0,0,0,0],
+            [0,4,0,0,0,9,7,0,0]]
+
+example4 :: Grid
+example4 = [[1,2,3,4,5,6,7,8,9],
+            [2,0,0,0,0,0,0,0,0],
+            [3,0,0,0,0,0,0,0,0],
+            [4,0,0,0,0,0,0,0,0],
+            [5,0,0,0,0,0,0,0,0],
+            [6,0,0,0,0,0,0,0,0],
+            [7,0,0,0,0,0,0,0,0],
+            [8,0,0,0,0,0,0,0,0],
+            [9,0,0,0,0,0,0,0,0]]
+
+example5 :: Grid
+example5 = [[1,0,0,0,0,0,0,0,0],
+            [0,2,0,0,0,0,0,0,0],
+            [0,0,3,0,0,0,0,0,0],
+            [0,0,0,4,0,0,0,0,0],
+            [0,0,0,0,5,0,0,0,0],
+            [0,0,0,0,0,6,0,0,0],
+            [0,0,0,0,0,0,7,0,0],
+            [0,0,0,0,0,0,0,8,0],
+            [0,0,0,0,0,0,0,0,9]]
 
 emptyN :: Node
 emptyN = (\ _ -> 0,constraints (\ _ -> 0))
@@ -368,9 +346,6 @@ genProblem :: Node -> IO Node
 genProblem n = do ys <- randomize xs
                   return (minimalize n ys)
    where xs = filledPositions (fst n)
-
-genProblem3 :: Node -> IO Node
-genProblem3
 
 main :: IO ()
 main = do [r] <- rsolveNs [emptyN]

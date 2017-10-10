@@ -1,12 +1,34 @@
 -- Assignment: Lab5
--- Exercise: 4
--- Student: Quinten Heijn
--- Time needed: ??
+-- Exercise: 1
+-- Student: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time needed: 2 hours
 --------------------------------------------------------------------------------
-
-module Lab5_4 where
-  import Data.List
-  import System.Random
+-- This file contain the code from lecture 5 with some added and
+-- changed functions. To see what is different search for 'NEW'.
+--
+-- Solution for the sudoku from the exercise:
+-- +---------+---------+---------+
+-- | 4  7  8 | 3  9  2 | 6  1  5 |
+-- |   +-----|--+   +--|-----+   |
+-- | 6 |1  9 | 7| 5 |8 | 3  2| 4 |
+-- | 2 |3  5 | 4| 1 |6 | 9  7| 8 |
+-- +---------+---------+---------+
+-- | 7 |2  6 | 8| 3 |5 | 1  4| 9 |
+-- |   +-----|--+   +--|-----+   |
+-- | 8  9  1 | 6  2  4 | 7  5  3 |
+-- |   +-----|--+   +--|-----+   |
+-- | 3 |5  4 | 9| 7 |1 | 2  8| 6 |
+-- +---------+---------+---------+
+-- | 5 |6  7 | 2| 8 |9 | 4  3| 1 |
+-- | 9 |8  3 | 1| 4 |7 | 5  6| 2 |
+-- |   +-----|--+   +--|-----+   |
+-- | 1  4  2 | 5  6  3 | 8  9  7 |
+-- +---------+---------+---------+
+--------------------------------------------------------------------------------
+module Lab5_1 where
+import Data.List
+import System.Random
 
 type Row    = Int
 type Column = Int
@@ -278,8 +300,6 @@ example1 = [[0,0,0,3,0,0,0,0,0],
             [0,8,0,0,4,0,0,0,0],
             [0,0,2,0,0,0,0,0,0]]
 
--------------------------------------------------------------------------------
-
 emptyN :: Node
 emptyN = (\ _ -> 0,constraints (\ _ -> 0))
 
@@ -368,9 +388,6 @@ genProblem :: Node -> IO Node
 genProblem n = do ys <- randomize xs
                   return (minimalize n ys)
    where xs = filledPositions (fst n)
-
-genProblem3 :: Node -> IO Node
-genProblem3
 
 main :: IO ()
 main = do [r] <- rsolveNs [emptyN]
