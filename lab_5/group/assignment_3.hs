@@ -1,17 +1,25 @@
--- Assignment: Lab5
--- Exercise: 3
--- Student: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi Ahanach
--- Time needed: 3 hours
---------------------------------------------------------------------------------
+{--
+Time spent:
+Quinten:    3h
+Dylan:      0.5h
+total:      3.5h
 
-module Lab5_3 where
+The minimal sudoku is example6, calculation takes a long time
+
+--}
+module Assignment_3 where
+
 import Data.List
 import System.Random
 import Control.Monad
-import Lecture5
+import Lecture5 hiding (main)
 
--- Minimal sudoku, but takes a long time to solve.
+main :: IO ()
+main = do
+  putStrLn $ id ("Checking if example 6 is minimal")
+  putStrLn (if (minimal example6) then "True" else "False")
+  return ()
+
 example6 :: Grid
 example6 = [[0,0,0,0,0,0,0,1,0],
             [0,0,0,0,0,2,0,0,3],
@@ -27,8 +35,7 @@ unique :: Grid -> Bool
 unique grid = (length $ solveNotShow grid) == 1
 
 oneChange :: Grid -> [Grid]
-oneChange grid = nub [replaceWithZero grid i j | i <- [0..8],
-         j <- [0..8]]
+oneChange grid = nub [replaceWithZero grid i j | i <- [0..8], j <- [0..8]]
 
 replaceWithZero :: Grid -> Int -> Int -> Grid
 replaceWithZero grid i j = take i grid ++ (replaceWithZero' (grid !! i) j) : drop (i+1) grid

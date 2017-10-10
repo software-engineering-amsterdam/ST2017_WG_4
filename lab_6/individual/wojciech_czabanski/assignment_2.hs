@@ -1,12 +1,12 @@
--- Assignment: Lab5
--- Exercise: 5
+-- Assignment: Lab6
+-- Exercise: 2
 -- Student: Wojciech Czabanski
 -- Time needed:  minutes
 --------------------------------------------------------------------------
 
-module Lab5_5 where
+module Assignment_2 where
  
 import Data.List
 import System.Random
-import Lecture5
+import Lecture6
 
