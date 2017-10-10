@@ -1,5 +1,5 @@
 -- Assignment: Lab6
--- Exercise: 6
+-- Exercise: 7
 -- Student: Wojciech Czabanski
 -- Time needed:  minutes
 --------------------------------------------------------------------------

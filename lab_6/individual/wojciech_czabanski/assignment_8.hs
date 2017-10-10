@@ -1,14 +1,12 @@
 -- Assignment: Lab6
--- Exercise: 3
+-- Exercise: 8
 -- Student: Wojciech Czabanski
 -- Time needed:  minutes
 --------------------------------------------------------------------------
 
-module Assignment_3 where
+module Assignment_8 where
  
 import Data.List
 import System.Random
 import Lecture6
 
-composites :: [Integer]
-composites = []
