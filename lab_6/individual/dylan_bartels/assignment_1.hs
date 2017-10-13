@@ -1,6 +1,9 @@
 {--
 Time spent:
 Dylan:      1.5h
+
+Source regarding squaring:
+http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
 --}
 module Assignment_1 where
 
@@ -17,12 +20,13 @@ main = do
   return ()
 
 exM :: Integer -> Integer -> Integer -> Integer
-exM x 0 n = 1 `mod` n
-exM x 1 n = x `mod` n
-exM x y n = let
-   greatestSquare = last $ takeWhile (<y) [2^x | x <- [1,2..]]
-   in ((x^greatestSquare `mod` n) * (x^(y - greatestSquare) `mod` n)) `mod` n
+exM x y z = (appendSquares x y z) `mod` z
 
--- > exM 3 37 53
--- Now only works for 1 square, what about more square's?
--- http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
+appendSquares :: Integer -> Integer -> Integer -> Integer
+appendSquares x 1 z = x `mod` z
+appendSquares x y z = let
+  greatestSquare' = greatestSquare y
+  in (x^(greatestSquare') `mod` z) * (appendSquares x (y - greatestSquare') z)
+
+greatestSquare :: Integer -> Integer
+greatestSquare n = last $ takeWhile (<n) [2^x | x <- [1,2..]]
