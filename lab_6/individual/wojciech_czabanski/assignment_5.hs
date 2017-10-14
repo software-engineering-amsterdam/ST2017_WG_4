@@ -10,3 +10,7 @@ import Data.List
 import System.Random
 import Lecture6
 
+-- use the carmichael numbers to test the fermats sieve
+
+carmichael :: [Integer]
+carmichael = []

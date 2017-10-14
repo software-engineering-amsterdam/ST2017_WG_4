@@ -1,13 +1,14 @@
 -- Assignment: Lab6
 -- Exercise: 1
 -- Student: Wojciech Czabanski
--- Time needed: 40 minutes
+-- Time needed: 65 minutes
 --------------------------------------------------------------------------
 
 module Assignment_1 where
  
 import Data.List
 import System.Random
+import Lecture6 hiding (exM)
 
 powersOf2UntilN :: Integer -> [Integer]
 powersOf2UntilN n = takeWhile (\v -> v <= n) [2^x | x <- [1..]]
@@ -28,4 +29,4 @@ expModPower x y modulo power | power < y = ((expModPower x y modulo (power+1)) *
                              | otherwise = x
 
 exM :: Integer -> Integer -> Integer -> Integer
-exM x y mod = (expModPower x (powerIterations y) mod 0) * (iteratedModuloPower x (powerRemainder y) mod 0)
+exM x y modulo = (expModPower x (powerIterations y) modulo 0) * (iteratedModuloPower x (powerRemainder y) modulo 0) `mod` modulo
