@@ -1,6 +1,6 @@
 {--
 Time spent:
-Dylan:      1h
+1h
 --}
 module Assignment_5 where
 
