@@ -1,5 +1,5 @@
 -- Assignment: Lab6
--- Exercise: 1
+-- Exercise: 2
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent: 4h

@@ -1,5 +1,5 @@
 -- Assignment: Lab6
--- Exercise: 2
+-- Exercise: 3
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent:
@@ -14,6 +14,6 @@ import Data.List
 import System.Random
 import Lecture6 hiding (composites)
 
--- Sieve composite numbers
+-- Retrieve composite numbers by checking that they are not prime
 composites :: [Integer]
 composites = filter (not . prime) [2..]
