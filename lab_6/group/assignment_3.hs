@@ -4,7 +4,7 @@
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent:
 -- Quinten:    2.0h
--- Dylan:      0.25h
+-- Dylan:      0.5h
 -- Wojciech:   0.75h
 -- Total:      3.0h
 --------------------------------------------------------------------------
@@ -14,6 +14,6 @@ import Data.List
 import System.Random
 import Lecture6 hiding (composites)
 
--- sieve
+-- Sieve composite numbers
 composites :: [Integer]
 composites = filter (not . prime) [2..]

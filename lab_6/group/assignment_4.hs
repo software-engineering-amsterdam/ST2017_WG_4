@@ -1,15 +1,14 @@
 -- Assignment: Lab6
--- Exercise: 2
+-- Exercise: 4
 -- Authors: Quinten Heijn, Dylan Bartels,
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent:
--- Dylan:      2.5h
+-- Dylan:      3.0h
 -- Wojciech:   0.75h
 -- Total:      3.25h
 --------------------------------------------------------------------------
 -- Info used:
 -- https://stackoverflow.com/questions/13337937/couldnt-match-expected-type-bool-with-actual-type-io-bool
-
 -- The following values were found as least composite number (~20 runs):
 -- k=1 - 9
 -- k=2 - 15
