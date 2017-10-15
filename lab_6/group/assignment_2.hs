@@ -1,7 +1,9 @@
-{--
-Time spent:
-3 h
---}
+-- Assignment: Lab6
+-- Exercise: 2
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time spent: 4h
+--------------------------------------------------------------------------
 module Assignment_2 where
 
 import Data.List
@@ -9,7 +11,7 @@ import System.Random
 import Lecture6 hiding (exM)
 import Assignment_1
 
--- See Assignment_2.png for the results.
+-- See assignment_2.png for the results.
 
 -- The test were done using ":set +s" in ghci.
 -- The parameter for the function were '10 exp 111', with 'exp' being variable

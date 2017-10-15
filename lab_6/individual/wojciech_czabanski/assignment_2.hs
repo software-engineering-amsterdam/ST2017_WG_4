@@ -1,7 +1,7 @@
 -- Assignment: Lab6
 -- Exercise: 2
 -- Student: Wojciech Czabanski
--- Time needed: 20 minutes
+-- Time needed: 45 minutes
 --------------------------------------------------------------------------
 
 module Assignment_2 where
@@ -20,7 +20,6 @@ testQuickCheck :: IO ()
 testQuickCheck = do
   print ("QuickCheck equivalence test")
   quickCheck prop_expEquivalence  
-  --quickCheck prop_expE
   return ()
 
 performanceTest_exM :: IO ()

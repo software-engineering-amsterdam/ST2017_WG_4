@@ -1,7 +1,7 @@
 -- Assignment: Lab6
 -- Exercise: 3
 -- Student: Wojciech Czabanski
--- Time needed: 25  minutes
+-- Time needed: 25 minutes
 --------------------------------------------------------------------------
 
 module Assignment_3 where

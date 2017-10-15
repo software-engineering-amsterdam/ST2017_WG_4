@@ -1,7 +1,13 @@
-{--
-Time spent:
-6 h
---}
+-- Assignment: Lab6
+-- Exercise: 1
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time spent:
+-- Dylan:      1.5h
+-- Quinten:    4.25h
+-- Wojciech:   1.25h
+-- Total:      7.0h
+--------------------------------------------------------------------------
 module Assignment_1 where
 
 import Data.List
