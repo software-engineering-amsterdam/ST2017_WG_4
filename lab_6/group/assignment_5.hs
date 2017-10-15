@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {--
 Time spent:
 1h
@@ -11,13 +10,6 @@ probable primality test will fail to show a carmichael number is composite
 untill we run across one of its factors.
 
 --}
-=======
--- Assignment: Lab6
--- Exercise: 5
--- Authors: Quinten Heijn, Dylan Bartels,
---          Wojciech Czabański, Elias El Khaldi Ahanach
--- Time spent: 1h
->>>>>>> ff39c2f0ae2b540d261cb9a8fedb624b3d967208
 module Assignment_5 where
 
 import Data.List
