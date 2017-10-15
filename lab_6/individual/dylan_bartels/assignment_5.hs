@@ -1,6 +1,10 @@
 {--
 Time spent:
 Dylan:      1h
+
+Straight away it's noticable that the pseudo prime found with k1,2,3 is higher
+than with the primeTestF. 
+
 --}
 module Assignment_5 where
 
