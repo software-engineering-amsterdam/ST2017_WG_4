@@ -1,19 +1,23 @@
-{--
-Time spent:
-2.5h
+-- Assignment: Lab6
+-- Exercise: 2
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time spent:
+-- Dylan:      2.5h
+-- Wojciech:   0.75h
+-- Total:      3.25h
+--------------------------------------------------------------------------
+-- Info used:
+-- https://stackoverflow.com/questions/13337937/couldnt-match-expected-type-bool-with-actual-type-io-bool
 
-Info used:
-https://stackoverflow.com/questions/13337937/couldnt-match-expected-type-bool-with-actual-type-io-bool
+-- The following values were found as least composite number (~20 runs):
+-- k=1 - 9
+-- k=2 - 15
+-- k=3 - 33
 
-The following values were found as least composite number (~20 runs):
-k=1 - 9
-k=2 - 15
-k=3 - 33
-
-The value for k has a direct influence of the size of different values being
-used for the base of the Fermat's little theorem. The base can suggest that a
-number is a prime while it is a psuedo prime.
---}
+-- The value for k has a direct influence of the size of different values being
+-- used for the base of the Fermat's little theorem. The base can suggest that a
+-- number is a prime while it is a psuedo prime.
 module Assignment_4 where
 
 import Data.List
