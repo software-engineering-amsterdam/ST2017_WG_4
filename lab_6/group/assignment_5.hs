@@ -1,7 +1,8 @@
-{--
-Time spent:
-1h
---}
+-- Assignment: Lab6
+-- Exercise: 5
+-- Authors: Quinten Heijn, Dylan Bartels,
+--          Wojciech Czabański, Elias El Khaldi Ahanach
+-- Time spent: 1h
 module Assignment_5 where
 
 import Data.List

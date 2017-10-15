@@ -4,12 +4,12 @@
 --          Wojciech Czabański, Elias El Khaldi Ahanach
 -- Time spent:
 -- Dylan:      1.5h
--- Quinten:    3.0h
+-- Quinten:    4.25h
 -- Wojciech:   1.25h
--- Total:      4.75h
+-- Total:      7.0h
 --------------------------------------------------------------------------
 module Assignment_1 where
-    
+
 import Data.List
 import System.Random
 import Test.QuickCheck
@@ -27,16 +27,16 @@ exM2 x expo modu = mod (product [mod (x^y) modu | y <- expList $ toBinary expo])
 squaring :: [Integer] -> [Integer] -> Integer -> Integer -> [Integer]
 squaring [] solvedList x modu = solvedList
 squaring (0:xs) ys x modu = squaring' xs ys newx modu
-    where newx = mod x modu
+  where newx = mod x modu
 squaring (1:xs) ys x modu = squaring' xs ([newx] ++ ys) newx modu
-    where newx = mod x modu
+  where newx = mod x modu
 
 squaring' :: [Integer] -> [Integer] -> Integer -> Integer -> [Integer]
 squaring' [] solvedList x modu = solvedList
 squaring' (0:xs) ys x modu = squaring' xs ys newx modu
-    where newx = mod (x*x) modu
+  where newx = mod (x*x) modu
 squaring' (1:xs) ys x modu = squaring' xs ([newx] ++ ys) newx modu
-    where newx = mod (x*x) modu
+  where newx = mod (x*x) modu
 
 expList :: [Integer] -> [Integer]
 expList xs = expList' 0 $ reverse xs
@@ -57,4 +57,3 @@ test1 = quickCheck test1'
 
 test1' :: Positive Integer -> Positive Integer -> Positive Integer -> Bool
 test1' (Positive x) (Positive y) (Positive z) = (expM x y z) == (exM x y z)
-    
