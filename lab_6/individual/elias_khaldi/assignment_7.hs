@@ -35,8 +35,8 @@ shuffle xs = do
 
 -- The findPair method looks for random pairs of primes both having n digits
 -- Example output:
--- *Assignment_7> findPair 7
--- (1000003,9999991)
+-- *Assignment_7> findPair 6
+-- (252779,883969)
 
 findPair :: Integer -> IO(Integer,Integer)
 findPair n = do
