@@ -1,6 +1,6 @@
 {--
 Time spent:
-15 min
+30 min
 --}
 module Assignment_3 where
 
