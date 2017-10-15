@@ -2,8 +2,12 @@
 Time spent:
 Dylan:      1h
 
-Straight away it's noticable that the pseudo prime found with k1,2,3 is higher
-than with the primeTestF. 
+Straight away it's noticable that output found with k1,2,3 is higher
+than with the sieve generated list. This is due to the output being fermat's
+psuedoprimes. The composite integer n is a carmichael number (pseudoprime) if
+a^(n-1) = 1 (mod n) for every integer a relatively prime to n. The Fermat
+probable primality test will fail to show a carmichael number is composite
+untill we run across one of its factors.
 
 --}
 module Assignment_5 where

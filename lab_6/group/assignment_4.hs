@@ -11,8 +11,10 @@ k=2 - 15
 k=3 - 33
 
 The value for k has a direct influence of the size of different values being
-used for the base of the Fermat's little theorem. The base can suggest that a
-number is a prime while it is a not.
+used for the base of the Fermat's little theorem. There is a possiblity that a
+integer p will pass the test while its not a prime these are called probable
+primes. The bigger the input for k the more base values will be tested to provide
+more certainty on the conclussion if a number is indeed a prime. 
 --}
 module Assignment_4 where
 
