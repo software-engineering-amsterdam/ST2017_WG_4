@@ -12,7 +12,7 @@ k=3 - 33
 
 The value for k has a direct influence of the size of different values being
 used for the base of the Fermat's little theorem. The base can suggest that a
-number is a prime while it is a psuedo prime.
+number is a prime while it is a not.
 --}
 module Assignment_4 where
 
