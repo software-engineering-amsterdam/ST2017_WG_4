@@ -1,6 +1,6 @@
 {--
 Time spent:
-Quinten:      h
+Quinten:     3 h
 --}
 module Assignment_1 where
 
@@ -9,8 +9,28 @@ import System.Random
 import Test.QuickCheck
 import Lecture6 hiding (exM)
 
+-- Solution that uses the squaring of modulos.
 exM :: Integer -> Integer -> Integer -> Integer
-exM x expo modu = mod (product [mod (x^y) modu | y <- expList $ toBinary expo]) modu
+exM x expo modu = mod (product (squaring (reverse $ toBinary expo) [] x modu)) modu
+
+-- Solution that doesn't use the squaring of modulos, but just breaks down the
+-- exponent in exponents with base 2.
+exM2 :: Integer -> Integer -> Integer -> Integer
+exM2 x expo modu = mod (product [mod (x^y) modu | y <- expList $ toBinary expo]) modu
+
+squaring :: [Integer] -> [Integer] -> Integer -> Integer -> [Integer]
+squaring [] solvedList x modu = solvedList
+squaring (0:xs) ys x modu = squaring' xs ys newx modu
+  where newx = mod x modu
+squaring (1:xs) ys x modu = squaring' xs ([newx] ++ ys) newx modu
+  where newx = mod x modu
+
+squaring' :: [Integer] -> [Integer] -> Integer -> Integer -> [Integer]
+squaring' [] solvedList x modu = solvedList
+squaring' (0:xs) ys x modu = squaring' xs ys newx modu
+  where newx = mod (x*x) modu
+squaring' (1:xs) ys x modu = squaring' xs ([newx] ++ ys) newx modu
+  where newx = mod (x*x) modu
 
 expList :: [Integer] -> [Integer]
 expList xs = expList' 0 $ reverse xs
